@@ -3,11 +3,11 @@ CRX3
 
 This module allows you to create web extension files for Chromium and Google Chrome browsers.
 
-It creates CRXv3 files, which work for browser versons 70+.
+It creates CRXv3 files, which work for browser versions 70+.
 
 If you need to create web extension file for older browser versions, where CRXv3 is not supported, use [CRX module](https://github.com/oncletom/crx) instead.
 
-It requires Node.js v11+ to run.
+It requires Node.js version 11.6.0 (or above) to run.
 
 # Installation
 
@@ -50,7 +50,7 @@ crx3 -p -o -z some-other-name.zip web-extension
 
 It will create "web-extension.crx" and "web-extension.pem" files, and "some-other-name.zip" file.
 
-**WARNING**: if you're using option without name/path, it must be specified before option with name/path. Otheriwse, be sure that the list of directories and/or files to include in web extension file is specified after the special `--` marker, like this:
+**WARNING**: if you're using option without name/path, it must be specified before option with name/path. Otherwise, be sure that the list of directories and/or files to include in web extension file is specified after the special `--` marker, like this:
 
 ```sh
 crx3 -z some-other-name.zip -z -o -- web-extension
@@ -97,7 +97,7 @@ npm run doc
 
 # Testing
 
-To run tests, clone module from repository (package does nto include required files) and use:
+To run tests, clone module from repository (package does not include required files) and use:
 
 ```sh
 npm test
