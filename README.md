@@ -50,7 +50,7 @@ crx3 -p -o -z some-other-name.zip web-extension
 
 It will create "web-extension.crx" and "web-extension.pem" files, and "some-other-name.zip" file.
 
-**WARNING**: if you're using option without name/path, it must be specified before option with name/path. Otheriwse, be sure that the list of dorectories and/or files to include in web extension file is specified after the special `--` marker, like this:
+**WARNING**: if you're using option without name/path, it must be specified before option with name/path. Otheriwse, be sure that the list of directories and/or files to include in web extension file is specified after the special `--` marker, like this:
 
 ```sh
 crx3 -z some-other-name.zip -z -o -- web-extension
