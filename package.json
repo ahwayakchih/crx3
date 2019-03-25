@@ -1,5 +1,5 @@
 {
-  "name": "CRX3",
+  "name": "crx3",
   "version": "1.0.0",
   "description": "Package web extension into CRX file (version 3) for Google Chrome and Chromium browsers",
   "main": "index.js",
