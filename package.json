@@ -30,7 +30,7 @@
     "test": "node ./test/index.js | tap-diff",
     "prepublishOnly": "npm run -s test && npm run -s checkStyle",
     "proto": "curl https://raw.githubusercontent.com/chromium/chromium/master/components/crx_file/crx3.proto > lib/crx3.proto",
-    "postproto": "pbf lib/crx3.proto > lib/crx3.js.pb",
+    "postproto": "echo '/* eslint-disable */' > lib/crx3.pb.js && pbf lib/crx3.proto >> lib/crx3.pb.js",
     "precheckStyle": "rm -f ./reports/eslint.txt",
     "checkStyle": "eslint index.js lib/*.js test/** bin/*  > ./reports/eslint.txt || echo 'ESLint results saved to `reports/eslint.txt`' && cat ./reports/eslint.txt",
     "precheckCoverage": "rm -rf ./reports/coverage",
