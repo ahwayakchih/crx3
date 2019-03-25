@@ -1,12 +1,15 @@
 {
   "name": "crx3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Package web extension into CRX file (version 3) for Google Chrome and Chromium browsers",
   "main": "index.js",
   "homepage": "https://github.com/ahwayakchih/crx3",
   "repository": {
     "type": "git",
     "url": "git://github.com/ahwayakchih/crx3.git"
+  },
+  "engines": {
+    "node": ">=11"
   },
   "bin": {
     "crx3": "./bin/crx3.js"

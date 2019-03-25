@@ -7,6 +7,8 @@ It creates CRXv3 files, which work for browser versons 70+.
 
 If you need to create web extension file for older browser versions, where CRXv3 is not supported, use [CRX module](https://github.com/oncletom/crx) instead.
 
+It requires Node.js v11+ to run.
+
 # Installation
 
 To install CRX3, as with most of the other Node.js modules, use following command line:
