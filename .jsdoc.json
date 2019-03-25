@@ -1,0 +1,13 @@
+{
+	"plugins": [
+		"plugins/markdown"
+	],
+	"markdown": {
+		"parser": "gfm",
+		"hardwrap": true,
+		"idInHeadings": true
+	},
+	"opts": {
+		"template": "node_modules/docdash"
+	}
+}
