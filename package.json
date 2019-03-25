@@ -40,5 +40,10 @@
     "chrome"
   ],
   "author": "Marcin Konicki (https://ahwayakchih.neoni.net)",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "bin/**",
+    "lib/**",
+    "index.js"
+  ]
 }

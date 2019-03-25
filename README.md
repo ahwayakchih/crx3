@@ -95,7 +95,7 @@ npm run doc
 
 # Testing
 
-To run tests, use:
+To run tests, clone module from repository (package does nto include required files) and use:
 
 ```sh
 npm test
