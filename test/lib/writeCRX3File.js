@@ -55,8 +55,11 @@ function compareWithExample (t, cfg) {
 		zip: path.join(examplePath, 'example-extension.zip')
 	};
 
-	t.ok(cfg.crxPath, 'Promised result should have `crxPath`');
-	t.ok(cfg.zipPath, 'Promised result should have `zipPath`');
+	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
+	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
+
+	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
+	t.ok(fs.existsSync(cfg.zipPath), `"${cfg.zipPath}" file should exist`);
 
 	const crx = new Promise((resolve, reject) => {
 		exec(`diff "${cfg.crxPath}" "${example.crx}"`, err => {
