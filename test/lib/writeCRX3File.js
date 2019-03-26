@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const exec = require('child_process').exec;
+const exec = require('child_process').execSync;
 const test = require('tape-catch');
 const writeCRX3File = require('../../lib/writeCRX3File');
 
@@ -63,22 +63,29 @@ function compareWithExample (t, cfg) {
 	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
 	t.ok(fs.existsSync(example.crx), `"${example.crx}" file should exist`);
 
-	const zip = new Promise((resolve, reject) => {
-		exec(`diff "${cfg.zipPath}" "${example.zip}"`, err => {
-			t.ok(!err, `Created "${cfg.zipPath}" should not differ from "${example.zip}"`);
-			fs.unlink(cfg.zipPath, err2 => err || err2 ? reject(err || err2) : resolve()); // eslint-disable-line no-confusing-arrow
-		});
-	});
+	var msg = `Created "${cfg.zipPath}" should not differ from "${example.zip}"`;
+	try {
+		exec(`diff "${cfg.zipPath}" "${example.zip}"`);
+		t.pass(msg);
+	}
+	catch (err) {
+		t.ok(!err, msg);
+	}
+	finally {
+		fs.unlinkSync(cfg.zipPath);
+	}
 
-	const crx = new Promise((resolve, reject) => {
-		exec(`diff "${cfg.crxPath}" "${example.crx}"`, err => {
-			t.ok(!err, `Created "${cfg.crxPath}" should not differ from "${example.crx}"`);
-			fs.unlink(cfg.crxPath, err2 => err || err2 ? reject(err || err2) : resolve()); // eslint-disable-line no-confusing-arrow
-		});
-	});
+	var msg = `Created "${cfg.crxPath}" should not differ from "${example.crx}"`;
+	try {
+		exec(`diff "${cfg.crxPath}" "${example.crx}"`);
+		t.pass(msg);
+	}
+	catch (err) {
+		t.ok(!err, msg);
+	}
+	finally {
+		fs.unlinkSync(cfg.crxPath);
+	}
 
-	Promise
-		.all([crx, zip])
-		.then(() => t.end())
-		.catch(t.end);
+	t.end();
 }
