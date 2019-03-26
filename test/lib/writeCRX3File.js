@@ -55,23 +55,25 @@ function compareWithExample (t, cfg) {
 		zip: path.join(examplePath, 'example-extension.zip')
 	};
 
-	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
-	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
-
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
 	t.ok(fs.existsSync(cfg.zipPath), `"${cfg.zipPath}" file should exist`);
+	t.ok(fs.existsSync(example.zip), `"${example.zip}" file should exist`);
 
-	const crx = new Promise((resolve, reject) => {
-		exec(`diff "${cfg.crxPath}" "${example.crx}"`, err => {
-			t.ok(!err, `Created "${cfg.crxPath}" should not differ from "${example.crx}"`);
-			fs.unlink(cfg.crxPath, err2 => err || err2 ? reject(err || err2) : resolve()); // eslint-disable-line no-confusing-arrow
-		});
-	});
+	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
+	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
+	t.ok(fs.existsSync(example.crx), `"${example.crx}" file should exist`);
 
 	const zip = new Promise((resolve, reject) => {
 		exec(`diff "${cfg.zipPath}" "${example.zip}"`, err => {
 			t.ok(!err, `Created "${cfg.zipPath}" should not differ from "${example.zip}"`);
 			fs.unlink(cfg.zipPath, err2 => err || err2 ? reject(err || err2) : resolve()); // eslint-disable-line no-confusing-arrow
+		});
+	});
+
+	const crx = new Promise((resolve, reject) => {
+		exec(`diff "${cfg.crxPath}" "${example.crx}"`, err => {
+			t.ok(!err, `Created "${cfg.crxPath}" should not differ from "${example.crx}"`);
+			fs.unlink(cfg.crxPath, err2 => err || err2 ? reject(err || err2) : resolve()); // eslint-disable-line no-confusing-arrow
 		});
 	});
 
