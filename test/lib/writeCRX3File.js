@@ -23,7 +23,7 @@ function testWriteCRX3FileWithoutArgs (t) {
 
 	p
 		.then(() => t.fail('Returned promise should not resolve'))
-		.catch(err => t.pass('Returned promise should reject'))
+		.catch(() => t.pass('Returned promise should reject'))
 		.finally(() => t.end());
 }
 
@@ -51,8 +51,8 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 function compareWithExample (t, cfg) {
 	const examplePath = path.join(CWD, 'example');
 	const example = {
-		crx  : path.join(examplePath, 'example-extension.crx'),
-		zip  : path.join(examplePath, 'example-extension.zip')
+		crx: path.join(examplePath, 'example-extension.crx'),
+		zip: path.join(examplePath, 'example-extension.zip')
 	};
 
 	t.ok(cfg.crxPath, 'Promised result should have `crxPath`');
@@ -61,14 +61,14 @@ function compareWithExample (t, cfg) {
 	const crx = new Promise((resolve, reject) => {
 		exec(`diff "${cfg.crxPath}" "${example.crx}"`, err => {
 			t.ok(!err, `Created "${cfg.crxPath}" should not differ from "${example.crx}"`);
-			fs.unlink(cfg.crxPath, err2 => err || err2 ? reject(err || err2) : resolve());
+			fs.unlink(cfg.crxPath, err2 => err || err2 ? reject(err || err2) : resolve()); // eslint-disable-line no-confusing-arrow
 		});
 	});
 
 	const zip = new Promise((resolve, reject) => {
 		exec(`diff "${cfg.zipPath}" "${example.zip}"`, err => {
 			t.ok(!err, `Created "${cfg.zipPath}" should not differ from "${example.zip}"`);
-			fs.unlink(cfg.zipPath, err2 => err || err2 ? reject(err || err2) : resolve());
+			fs.unlink(cfg.zipPath, err2 => err || err2 ? reject(err || err2) : resolve()); // eslint-disable-line no-confusing-arrow
 		});
 	});
 
