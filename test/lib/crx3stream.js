@@ -28,7 +28,7 @@ function testCRXStreamWithoutArgs (t) {
 }
 
 function testCRXStreamWithPathOnly (t) {
-	const name = 'test.crx';
+	const name = `test${process.hrtime.bigint()}.crx`;
 	const stream = crx3stream(name);
 
 	t.strictEqual(typeof stream, 'object', 'Should return object when called with path only');
@@ -39,7 +39,7 @@ function testCRXStreamWithPathOnly (t) {
 }
 
 function testCRXStreamWithOptionsOnly (t) {
-	const name = 'test.crx';
+	const name = `test${process.hrtime.bigint()}.crx`;
 	const stream = crx3stream({crxPath: name});
 
 	t.strictEqual(typeof stream, 'object', 'Should return object when called with options only');
@@ -50,7 +50,7 @@ function testCRXStreamWithOptionsOnly (t) {
 }
 
 function testCRXStreamWithBothPathAndOptions (t) {
-	const name = 'test.crx';
+	const name = `test${process.hrtime.bigint()}.crx`;
 	const stream = crx3stream(name, {crxPath: 'ignored.crx'});
 
 	t.strictEqual(typeof stream, 'object', 'Should return object when called with options only');
