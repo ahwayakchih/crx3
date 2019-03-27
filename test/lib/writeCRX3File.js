@@ -34,7 +34,11 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 		zip: path.join(CWD, `${name}.zip`)
 	};
 
-	const p = writeCRX3File([path.join(CWD, 'example', 'example-extension', 'manifest.json')], {
+	const manifestPath = path.join(CWD, 'example', 'example-extension', 'manifest.json');
+
+	tryExec(t, `touch ${manifestPath} -t 201903242329.42`, '`touch` command is needed for creating matchable files');
+
+	const p = writeCRX3File([manifestPath], {
 		crxPath: temp.crx,
 		zipPath: temp.zip,
 		keyPath: path.join(CWD, 'example', 'example-extension.pem')
