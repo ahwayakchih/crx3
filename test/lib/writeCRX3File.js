@@ -58,34 +58,27 @@ function compareWithExample (t, cfg) {
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
 	t.ok(fs.existsSync(cfg.zipPath), `"${cfg.zipPath}" file should exist`);
 	t.ok(fs.existsSync(example.zip), `"${example.zip}" file should exist`);
+	t.strictEqual(tryExec(`unzip -l ${cfg.zipPath}`), null, `"${cfg.zipPath}" file should be a valid ZIP file`);
 
 	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
 	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
 	t.ok(fs.existsSync(example.crx), `"${example.crx}" file should exist`);
 
-	var msg = `Created "${cfg.zipPath}" should not differ from "${example.zip}"`;
-	try {
-		exec(`diff "${cfg.zipPath}" "${example.zip}"`);
-		t.pass(msg);
-	}
-	catch (err) {
-		t.ok(!err, msg);
-	}
-	finally {
-		fs.unlinkSync(cfg.zipPath);
-	}
+	t.strictEqual(tryExec(`diff "${cfg.zipPath}" "${example.zip}"`), null, `Created "${cfg.zipPath}" should not differ from "${example.zip}"`);
+	fs.unlinkSync(cfg.zipPath);
 
-	var msg = `Created "${cfg.crxPath}" should not differ from "${example.crx}"`;
-	try {
-		exec(`diff "${cfg.crxPath}" "${example.crx}"`);
-		t.pass(msg);
-	}
-	catch (err) {
-		t.ok(!err, msg);
-	}
-	finally {
-		fs.unlinkSync(cfg.crxPath);
-	}
+	t.strictEqual(tryExec(`diff "${cfg.crxPath}" "${example.crx}"`), null, `Created "${cfg.crxPath}" should not differ from "${example.crx}"`);
+	fs.unlinkSync(cfg.crxPath);
 
 	t.end();
+}
+
+function tryExec (cmd) {
+	try {
+		exec(cmd);
+		return null;
+	}
+	catch (err) {
+		return err;
+	}
 }
