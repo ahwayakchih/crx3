@@ -18,6 +18,9 @@ writeCRX3File(process.stdin.isTTY ? config.srcPaths : process.stdin, config)
 		if (options.zipPath) {
 			console.log(`ZIP file created at "${options.zipPath}"`);
 		}
+		if (options.xmlPath) {
+			console.log(`XML file created at "${options.xmlPath}"`);
+		}
 	})
 	.catch(err => {
 		console.error(err);

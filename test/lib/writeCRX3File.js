@@ -31,7 +31,8 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 	const name = `test${process.hrtime.bigint()}`;
 	const temp = {
 		crx: path.join(CWD, `${name}.crx`),
-		zip: path.join(CWD, `${name}.zip`)
+		zip: path.join(CWD, `${name}.zip`),
+		xml: path.join(CWD, `${name}.xml`)
 	};
 
 	const manifestPath = path.join(CWD, 'example', 'example-extension', 'manifest.json');
@@ -41,6 +42,7 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 	const p = writeCRX3File([manifestPath], {
 		crxPath: temp.crx,
 		zipPath: temp.zip,
+		xmlPath: temp.xml,
 		keyPath: path.join(CWD, 'example', 'example-extension.pem')
 	});
 
@@ -56,7 +58,8 @@ function compareWithExample (t, cfg) {
 	const examplePath = path.join(CWD, 'example');
 	const example = {
 		crx: path.join(examplePath, 'example-extension.crx'),
-		zip: path.join(examplePath, 'example-extension.zip')
+		zip: path.join(examplePath, 'example-extension.zip'),
+		xml: path.join(examplePath, 'example-extension.xml')
 	};
 
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
@@ -68,12 +71,20 @@ function compareWithExample (t, cfg) {
 	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
 	t.ok(fs.existsSync(example.crx), `"${example.crx}" file should exist`);
 
+	t.ok(cfg.xmlPath, 'Promised result should have `xmlPath` set');
+	t.ok(fs.existsSync(cfg.xmlPath), `"${cfg.xmlPath}" file should exist`);
+	t.ok(fs.existsSync(example.xml), `"${example.xml}" file should exist`);
+
 	if (tryExec(t, `diff "${cfg.zipPath}" "${example.zip}"`, `Created "${cfg.zipPath}" should match "${example.zip}"`)) {
 		fs.unlinkSync(cfg.zipPath);
 	}
 
 	if (tryExec(t, `diff "${cfg.crxPath}" "${example.crx}"`, `Created "${cfg.crxPath}" should match "${example.crx}"`)) {
 		fs.unlinkSync(cfg.crxPath);
+	}
+
+	if (tryExec(t, `diff "${cfg.xmlPath}" "${example.xml}"`, `Created "${cfg.xmlPath}" should match "${example.xml}"`)) {
+		fs.unlinkSync(cfg.xmlPath);
 	}
 
 	t.end();

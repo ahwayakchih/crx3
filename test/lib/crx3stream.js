@@ -68,6 +68,15 @@ function compareWithExample (t, crxStream) {
 	// Backup options, because they are cleaned up later by CRX3Stream, before we get to test the files.
 	const options = Object.assign({}, crxStream.crx.cfg);
 
+	crxStream.once('finish', () => {
+		t.strictEqual(typeof crxStream.crx.appId, 'object', 'Finishing CRX3Stream should have `crx.appId` Buffer set');
+		t.strictEqual(crxStream.crx.appId.length, 16, '`crx.appId` should be 16 bytes long'); // eslint-disable-line no-magic-numbers
+
+		t.strictEqual(typeof crxStream.crx.encodedAppId, 'string', 'Finishing CRX3Stream should have `crx.encodedAppId` string set');
+		t.strictEqual(crxStream.crx.encodedAppId.length, 32, '`crx.encodedAppId` should be 32 characters long'); // eslint-disable-line no-magic-numbers
+		t.strictEqual(crxStream.crx.encodedAppId, 'oldmflkhpnhejcakhabdmkjafmccabek', '`crx.encodedAppId` should match that of "example/example-extension.crx"');
+	});
+
 	crxStream.on('close', () => {
 		const examplePath = path.join(CWD, 'example', 'example-extension.crx');
 		exec(`diff "${options.crxPath}" "${examplePath}"`, err => {

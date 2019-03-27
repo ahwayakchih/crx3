@@ -36,6 +36,9 @@ It supports following options:
 - *-z, --zip, --zipPath*: create also a simple ZIP file with web extension's files
 - *-o, --crx, --crxPath*: specify custom path name for CRX3 file
 - *-p, --key, --keyPath*: specify custom path name for private key file
+- *-x, --xml, --xmlPath*: specify custom path name for XML (Update Manifest) file
+- *--appVersion*        : specify version number to be written into Update Manifest file
+- *--crxURL*            : specify URL to be written into Update Manifest file
 
 If option is not followed by a path/name, file name will be based on the web extension's directory name.
 
@@ -65,6 +68,9 @@ cat web-extension.zip | ./bin/crx3 -p web-extension.pem
 It will read existing ZIP file contents and create "web-extension.crx" and "web-extension.pem" files.
 Make sure that ZIP file content has no parent directory, e.g., "manifest.json" file has to be there, not "web-extension/manifest.json".
 Otherwise new CRX file will not work in a browser.
+
+**WARNING**: CRX3 does not read contents of the ZIP file. Which means, that for optional XML file to be working, either `APP_VERSION` environment variable or `--appVersion` argument has to be set. Otherwise XML file will contain "`${APP_VERSION}`" placeholder instead.
+Same for `CRX_URL` and `--crxURL`.
 
 You can also create ZIP file on the fly, and pass it like this:
 
