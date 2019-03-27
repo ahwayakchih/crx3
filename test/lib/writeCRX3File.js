@@ -77,11 +77,11 @@ function compareWithExample (t, cfg) {
 
 function tryExec (t, cmd, msg) {
 	try {
-		var margin = (new Array(t._objectPrintDepth)).join('.') + ' ';
+		var margin = (new Array(t._objectPrintDepth)).join('.') + ' '; // eslint-disable-line prefer-template,no-underscore-dangle
 		var stdout = exec(cmd);
 		t.pass(msg);
 		if (stdout && stdout.length > 0) {
-			t.comment(margin + stdout.toString('utf8').replace(/\n+/g, '\n' + margin));
+			t.comment(margin + stdout.toString('utf8').replace(/\n+/g, '\n' + margin)); // eslint-disable-line prefer-template
 		}
 		return true;
 	}
