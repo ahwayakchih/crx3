@@ -246,12 +246,7 @@ module.exports = {
 		'one-var': [2, 'never'],
 		'one-var-declaration-per-line': 2,
 		'operator-assignment': [2, 'always'],
-		'operator-linebreak': [2, 'after', {
-			overrides: {
-				'||': 'before',
-				'&&': 'before'
-			}
-		}],
+		'operator-linebreak': [2, 'before', {overrides: {',': 'after'}}],
 		'padded-blocks': [2, 'never'],
 		// 'padding-line-between-statements': 0,
 		// 'prefer-object-spread': 0,
