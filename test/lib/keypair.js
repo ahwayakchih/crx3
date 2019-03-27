@@ -42,9 +42,11 @@ test('keypair', t => {
 		fs.unlinkSync(keyPath);
 	}
 
+	const mask = process.umask(0o000);
 	const failPath = 'forbidden';
 	const writeOnly = 0o200;
 	fs.writeFileSync(failPath, '', {mode: writeOnly});
+	process.umask(mask);
 	const fail = keypair(failPath);
 	t.strictEqual(fail, null, 'Should return `null` if key file exists but could not be read');
 	fs.unlinkSync(failPath);
