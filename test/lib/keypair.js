@@ -3,10 +3,10 @@ const test = require('tape-catch');
 const keypair = require('../../lib/keypair');
 
 test('keypair', t => {
-	t.strictEqual(typeof keypair, 'function', 'Should export function');
+	t.strictEqual(typeof keypair, 'function', 'Should export a function');
 
 	const pair = keypair();
-	t.strictEqual(typeof pair, 'object', 'Should create object');
+	t.strictEqual(typeof pair, 'object', 'Should create an object');
 
 	t.ok(pair.privateKey, 'Pair should contain `privateKey`');
 	t.strictEqual(typeof pair.privateKey, 'object', '`privateKey` should be an object');

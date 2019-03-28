@@ -3,7 +3,7 @@ const test = require('tape-catch');
 const getFilePaths = require('../../lib/getFilePaths');
 
 test('getFilePaths', t => {
-	t.strictEqual(typeof getFilePaths, 'function', 'Should export function');
+	t.strictEqual(typeof getFilePaths, 'function', 'Should export a function');
 
 	var temp = getFilePaths();
 	t.ok(Array.isArray(temp) && temp.length === 0, 'Should return empty array when called without arguments');

@@ -18,7 +18,7 @@ test('writeCRX3File', t => {
 function testWriteCRX3FileWithoutArgs (t) {
 	const p = writeCRX3File();
 
-	t.strictEqual(typeof p, 'object', 'Should return object when called without arguments');
+	t.strictEqual(typeof p, 'object', 'Should return an object when called without arguments');
 	t.strictEqual(p.constructor.name, 'Promise', 'Returned object should be a Promise');
 
 	p

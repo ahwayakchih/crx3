@@ -2,13 +2,13 @@ const test = require('tape-catch');
 const config = require('../../lib/configuration');
 
 test('configuration', t => {
-	t.strictEqual(typeof config, 'function', 'Should export function');
+	t.strictEqual(typeof config, 'function', 'Should export a function');
 
 	const CWD = process.cwd();
 	const dirName = 'example-extension';
 
 	const c = config();
-	t.strictEqual(typeof c, 'object', 'Should create object');
+	t.strictEqual(typeof c, 'object', 'Should create an object');
 	t.strictEqual(typeof c.helpText, 'function', 'Created object should have `helpText` method');
 	t.strictEqual(typeof c.setFromOptions, 'function', 'Created object should have `setFromOptions` method');
 

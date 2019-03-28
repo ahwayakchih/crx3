@@ -2,7 +2,7 @@ const test = require('tape-catch');
 const findCommonPath = require('../../lib/findCommonPath');
 
 test('findCommonPath', t => {
-	t.strictEqual(typeof findCommonPath, 'function', 'Should export function');
+	t.strictEqual(typeof findCommonPath, 'function', 'Should export a function');
 
 	t.strictEqual(findCommonPath(), '', 'Should return empty string when called without arguments');
 	t.strictEqual(findCommonPath([]), '', 'Should return empty string when files array is empty');
