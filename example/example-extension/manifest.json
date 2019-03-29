@@ -2,5 +2,6 @@
 	"name": "Example That Does Nothing",
 	"version": "1.0",
 	"description": "Create a better one!",
-	"manifest_version": 2
+	"manifest_version": 2,
+	"minimum_chrome_version": "65"
 }
