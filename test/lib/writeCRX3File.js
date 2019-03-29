@@ -111,10 +111,9 @@ function tryExec (t, cmd, msg) {
 		return true;
 	}
 	catch (err) {
-		t.fail((err.stderr && err.stderr.toString('utf8'))
+		t.error((err.stderr && err.stderr.toString('utf8'))
 			|| (err.stdout && err.stdout.toString('utf8'))
-			|| err.message);
-		t.fail(msg);
+			|| err.message, msg);
 		return false;
 	}
 }
