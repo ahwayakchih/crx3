@@ -43,15 +43,15 @@ It supports following options:
 If option is not followed by a path/name, file name will be based on the web extension's directory name.
 
 Private key file will not be created if one already exist. In such case, existing one will be used.
-CRX and ZIP files are always overwritten.
+CRX, ZIP and XML files are always overwritten.
 
 For example:
 
 ```sh
-crx3 -p -o -z some-other-name.zip web-extension
+crx3 -p -o -x -z some-other-name.zip web-extension
 ```
 
-It will create "web-extension.crx" and "web-extension.pem" files, and "some-other-name.zip" file.
+It will create "web-extension.pem" (if one does not exist yet), "web-extension.crx", "web-extension.xml" and "some-other-name.zip" files.
 
 **WARNING**: if you're using option without name/path, it must be specified before option with name/path. Otherwise, be sure that the list of directories and/or files to include in web extension file is specified after the special `--` marker, like this:
 
@@ -69,8 +69,8 @@ It will read existing ZIP file contents and create "web-extension.crx" and "web-
 Make sure that ZIP file content has no parent directory, e.g., "manifest.json" file has to be there, not "web-extension/manifest.json".
 Otherwise new CRX file will not work in a browser.
 
-**WARNING**: CRX3 does not read contents of the ZIP file. Which means, that for optional XML file to be working, either `APP_VERSION` environment variable or `--appVersion` argument has to be set. Otherwise XML file will contain "`${APP_VERSION}`" placeholder instead.
-Same for `CRX_URL` and `--crxURL`.
+**WARNING**: CRX3 does not read contents of the ZIP file. Which means, that for an optional XML file to be working, either `APP_VERSION` environment variable or `--appVersion` argument has to be specified. Otherwise XML file will contain "`${APP_VERSION}`" placeholder instead.
+Same for `CRX_URL`/`--crxURL` value.
 
 You can also create ZIP file on the fly, and pass it like this:
 
