@@ -38,8 +38,8 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 	const manifestPath = path.join(CWD, 'example', 'example-extension', 'manifest.json');
 	const utime = new Date('2019-03-24T23:29:00Z');
 	try {
-		fs.utimesSync(path.dirname(manifestPath), utime, utime);
 		fs.utimesSync(manifestPath, utime, utime);
+		fs.utimesSync(path.dirname(manifestPath), utime, utime);
 	}
 	catch (err) {
 		t.comment('Should be able to change atime and mtime of example paths, to create matchable files');
