@@ -25,7 +25,7 @@ npm install -g crx3
 
 # Usage (CLI)
 
-If you installed CRX3 globally, or you are trying to use it from your project's `package.json` script, you should be able to use it like this:
+If you installed CRX3 globally, or you are trying to use it from your project's `package.json` script(s), you should be able to use it like this:
 
 ```sh
 crx3 web-extension-directory
@@ -39,6 +39,7 @@ It supports following options:
 - *-x, --xml, --xmlPath*: specify custom path name for XML (Update Manifest) file
 - *--appVersion*        : specify version number to be written into Update Manifest file
 - *--crxURL*            : specify URL to be written into Update Manifest file
+- *--browserVersion*    : specify minimum browser version required to run web extension
 
 If option is not followed by a path/name, file name will be based on the web extension's directory name.
 
@@ -62,7 +63,7 @@ crx3 -z some-other-name.zip -z -o -- web-extension
 If you already have a ZIP file containing web extension's files, you can use CRX3 like this:
 
 ```sh
-cat web-extension.zip | ./bin/crx3 -p web-extension.pem
+cat web-extension.zip | crx3 -p web-extension.pem
 ```
 
 It will read existing ZIP file contents and create "web-extension.crx" and "web-extension.pem" files.
@@ -70,7 +71,7 @@ Make sure that ZIP file content has no parent directory, e.g., "manifest.json" f
 Otherwise new CRX file will not work in a browser.
 
 **WARNING**: CRX3 does not read contents of the ZIP file. Which means, that for an optional XML file to be working, either `APP_VERSION` environment variable or `--appVersion` argument has to be specified. Otherwise XML file will contain "`${APP_VERSION}`" placeholder instead.
-Same for `CRX_URL`/`--crxURL` value.
+Same for `CRX_URL`/`--crxURL` and `BROWSER_VERSION`/`--browserVersion` values.
 
 You can also create ZIP file on the fly, and pass it like this:
 
