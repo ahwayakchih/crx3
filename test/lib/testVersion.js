@@ -22,6 +22,11 @@ test('testVersion', t => {
 		['1', '1.0', true],
 		['1', '2.0', false],
 		['1.0', '2.0', false],
+		['1.0-1', '1', true],
+		['1.0-1', '1.1', false],
+		['1.0-1', '1.0-1', true],
+		['1.0-1', '1.0-2', false],
+		['1.0-2', '1.0-1', true],
 		['1.0-beta', '1', false],
 		['1.0-beta', '1.0', false],
 		['1.0-beta', '1.0-beta', true],
@@ -39,6 +44,11 @@ test('testVersion', t => {
 		['1.2.3-beta', '1.2.3-beta', true],
 		['1.2.3-beta', '1.2.3-alpha', true],
 		['1.2.3-alpha', '1.2.3-beta', false],
+		['1.2.3-alpha', '1.2.3-alpha-1', false],
+		['1.2.3-alpha-1', '1.2.3-alpha', true],
+		['1.2.3-alpha-1', '1.2.3-alpha-2', false],
+		['1.2.3-alpha-beta', '1.2.3-alpha-delta', false],
+		['1.2.3-alpha-beta', '1.2.3-alpha-alpha', true],
 		['1.2.3-beta', '1', true],
 		['1.10.3-65.el6', '1.10.3-42z1.el6_7', true], // From: https://github.com/leohihimax/node-version-compare/issues/2
 		['1.10.el6', '1.10.el6_7', false]
