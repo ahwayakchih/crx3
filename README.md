@@ -3,7 +3,7 @@ CRX3
 
 This module allows you to create web extension files for Chromium and Google Chrome browsers.
 
-It creates CRXv3 files, which work for browser versions 70+.
+It creates CRXv3 files, which work for Chrome versions 64.0.3242 and above.
 
 If you need to create web extension file for older browser versions, where CRXv3 is not supported, use [CRX module](https://github.com/oncletom/crx) instead.
 
