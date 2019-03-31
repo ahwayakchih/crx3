@@ -8,7 +8,7 @@ if (process.stdin.isTTY && (!config.srcPaths || config.srcPaths.length < 1)) {
 	console.log(config
 		.helpText()
 		.replace(/```sh\n+([\w\W]+?)\n+```/g, (_, sh) => `\u001b[1m${sh}\u001b[0m`)
-		.replace(/\*\*([^*]+?)\*\*/g, (_, bold) => `\u001b[7m\u001b[1m${bold}\u001b[0m`)
+		.replace(/\*\*([^*]+?)\*\*/g, (_, bold) => `\u001b[7;1m${bold}\u001b[0m`)
 		.replace(/\*([^*]+?)\*/g, (_, italic) => `\u001b[1m${italic}\u001b[0m`));
 	process.exit();
 }
