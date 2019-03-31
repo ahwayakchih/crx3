@@ -23,7 +23,7 @@ or install it globally:
 npm install -g crx3
 ```
 
-# Usage (CLI)
+## Usage (CLI)
 
 If you installed CRX3 globally, or you are trying to use it from your project's `package.json` script(s), you should be able to use it like this:
 
@@ -79,7 +79,7 @@ You can also create ZIP file on the fly, and pass it like this:
 zip -r -9 -j - web-extension | crx3 -p web-extension.pem
 ```
 
-# Usage (code)
+## Usage (code)
 
 ```js
 const crx3 = require('crx3');
@@ -94,7 +94,7 @@ crx3(['example/example-extension/manifest.json'], {
 ;
 ```
 
-# Documentation
+## API Documentation
 
 To generate documentation, use:
 
@@ -102,7 +102,7 @@ To generate documentation, use:
 npm run doc
 ```
 
-# Testing
+## Testing
 
 To run tests, clone module from repository (package does not include required files) and use:
 
