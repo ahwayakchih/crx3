@@ -10,6 +10,7 @@ test('writeCRX3File', t => {
 	t.strictEqual(typeof writeCRX3File, 'function', 'Should export a function');
 
 	t.test('... without args', testWriteCRX3FileWithoutArgs);
+	t.test('... without manifest.json', testWriteCRX3FileWithoutManifestJSON);
 	t.test('... with both files and options', testWriteCRX3FileWithFilesAndOptions);
 
 	t.end();
@@ -19,6 +20,18 @@ function testWriteCRX3FileWithoutArgs (t) {
 	const p = writeCRX3File();
 
 	t.strictEqual(typeof p, 'object', 'Should return an object when called without arguments');
+	t.strictEqual(p.constructor.name, 'Promise', 'Returned object should be a Promise');
+
+	p
+		.then(() => t.fail('Returned promise should not resolve'))
+		.catch(() => t.pass('Returned promise should reject'))
+		.finally(() => t.end());
+}
+
+function testWriteCRX3FileWithoutManifestJSON (t) {
+	const p = writeCRX3File([__dirname]);
+
+	t.strictEqual(typeof p, 'object', 'Should return an object when called with files');
 	t.strictEqual(p.constructor.name, 'Promise', 'Returned object should be a Promise');
 
 	p
