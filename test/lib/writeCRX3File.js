@@ -18,6 +18,7 @@ test('writeCRX3File', t => {
 
 function testWriteCRX3FileWithoutArgs (t) {
 	const p = writeCRX3File();
+	const crxPath = path.join(CWD, 'web-extension.crx');
 
 	t.strictEqual(typeof p, 'object', 'Should return an object when called without arguments');
 	t.strictEqual(p.constructor.name, 'Promise', 'Returned object should be a Promise');
@@ -25,11 +26,20 @@ function testWriteCRX3FileWithoutArgs (t) {
 	p
 		.then(() => t.fail('Returned promise should not resolve'))
 		.catch(() => t.pass('Returned promise should reject'))
-		.finally(() => t.end());
+		.finally(() => {
+			try {
+				fs.statSync(crxPath);
+			}
+			catch (err) {
+				t.ok(err, `Should not create any "${crxPath}" file`);
+			}
+			t.end();
+		});
 }
 
 function testWriteCRX3FileWithoutManifestJSON (t) {
 	const p = writeCRX3File([__dirname]);
+	const crxPath = path.join(CWD, 'web-extension.crx');
 
 	t.strictEqual(typeof p, 'object', 'Should return an object when called with files');
 	t.strictEqual(p.constructor.name, 'Promise', 'Returned object should be a Promise');
@@ -37,7 +47,18 @@ function testWriteCRX3FileWithoutManifestJSON (t) {
 	p
 		.then(() => t.fail('Returned promise should not resolve'))
 		.catch(() => t.pass('Returned promise should reject'))
-		.finally(() => t.end());
+		.finally(() => {
+			try {
+				if (fs.statSync(crxPath).size > 0) {
+					throw new Error(`"${crxPath} file is not empty`);
+				}
+				fs.unlinkSync(crxPath);
+			}
+			catch (err) {
+				t.error(err, `Should create an empty "${crxPath}" file`);
+			}
+			t.end();
+		});
 }
 
 function testWriteCRX3FileWithFilesAndOptions (t) {
