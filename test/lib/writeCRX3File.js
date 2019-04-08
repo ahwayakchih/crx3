@@ -108,8 +108,8 @@ function compareWithExample (t, cfg) {
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
 	t.ok(fs.existsSync(cfg.zipPath), `"${cfg.zipPath}" file should exist`);
 	t.ok(fs.existsSync(example.zip), `"${example.zip}" file should exist`);
-	tryExec(t, `unzip -l ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`);
-	tryExec(t, `unzip -l ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`);
+	tryExec(t, `unzip -v ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`);
+	tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`);
 
 	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
 	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
