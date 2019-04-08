@@ -41,10 +41,12 @@ It supports following options:
 - *--crxURL*            : specify URL to be written into Update Manifest file
 - *--browserVersion*    : specify minimum browser version required to run web extension
 
-If option is not followed by a path/name, file name will be based on the web extension's directory name.
+If any of the `*Path` options is not followed by a path or a file name, output file name will be based on the web extension's directory name.
 
-Private key file will not be created if one already exist. In such case, existing one will be used.
+Private key file will not be created if one already exist. Existing one will be used.
 CRX, ZIP and XML files are always overwritten.
+
+`--appVersion`, `--crxURL` and `--browserVersion` are used only for writing XML file.
 
 For example:
 
