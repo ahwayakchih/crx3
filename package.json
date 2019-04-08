@@ -21,9 +21,9 @@
   },
   "devDependencies": {
     "c8": "^3.4.0",
-    "docdash": "^1.0.3",
-    "eslint": "^5.15.3",
-    "eslint-plugin-jsdoc": "^4.6.0",
+    "docdash": "^1.1.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jsdoc": "^4.8.2",
     "jsdoc": "github:jsdoc3/jsdoc",
     "tap-diff": "^0.1.1",
     "tape": "^4.10.1",
