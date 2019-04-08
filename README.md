@@ -81,7 +81,7 @@ You can also create ZIP file on the fly, and pass it like this:
 zip -r -9 -j - web-extension | crx3 -p web-extension.pem
 ```
 
-## Usage (code)
+## Usage (API)
 
 ```js
 const crx3 = require('crx3');
