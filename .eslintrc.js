@@ -303,12 +303,14 @@ module.exports = {
 		'yield-star-spacing': [2, 'both'],
 
 		// JSDoc
+		'jsdoc/check-alignment': 1,
 		'jsdoc/check-examples': 1,
+		'jsdoc/check-indentation': 1,
 		'jsdoc/check-param-names': 1,
+		'jsdoc/check-syntax': 0,
 		'jsdoc/check-tag-names': 1,
 		'jsdoc/check-types': 1,
 		'jsdoc/newline-after-description': 1,
-		'jsdoc/no-undefined-types': 0,
 		'jsdoc/require-description': 0,
 		'jsdoc/require-description-complete-sentence': 0,
 		'jsdoc/require-example': 0,
@@ -321,7 +323,8 @@ module.exports = {
 		'jsdoc/require-returns-check': 1,
 		'jsdoc/require-returns-description': 0,
 		'jsdoc/require-returns-type': 1,
-		'jsdoc/valid-types': 1
+		'jsdoc/valid-types': 1,
+		'jsdoc/no-undefined-types': 0
 	},
 	settings: {
 		jsdoc: {

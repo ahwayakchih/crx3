@@ -20,13 +20,13 @@
     "yazl": "^2.5.1"
   },
   "devDependencies": {
-    "c8": "^3.4.0",
-    "docdash": "^1.1.0",
+    "c8": "^5.0.1",
+    "docdash": "^1.1.1",
     "eslint": "^5.16.0",
-    "eslint-plugin-jsdoc": "^4.8.2",
+    "eslint-plugin-jsdoc": "^7.2.3",
     "jsdoc": "github:jsdoc3/jsdoc",
     "tap-diff": "^0.1.1",
-    "tape": "^4.10.1",
+    "tape": "^4.10.2",
     "tape-catch": "^1.0.6"
   },
   "scripts": {
