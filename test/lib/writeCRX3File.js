@@ -16,6 +16,7 @@ test('writeCRX3File', t => {
 	t.end();
 });
 
+/* eslint-disable jsdoc/require-jsdoc */
 function testWriteCRX3FileWithoutArgs (t) {
 	const p = writeCRX3File();
 	const crxPath = path.join(CWD, 'web-extension.crx');

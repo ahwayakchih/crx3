@@ -17,6 +17,7 @@ test('crx3stream', t => {
 	t.end();
 });
 
+/* eslint-disable jsdoc/require-jsdoc */
 function testCRXStreamWithoutArgs (t) {
 	const stream = crx3stream();
 

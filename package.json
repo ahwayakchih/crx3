@@ -23,7 +23,7 @@
     "c8": "^5.0.1",
     "docdash": "^1.1.1",
     "eslint": "^5.16.0",
-    "eslint-plugin-jsdoc": "^7.2.3",
+    "eslint-plugin-jsdoc": "^8.0.1",
     "jsdoc": "github:jsdoc3/jsdoc",
     "tap-diff": "^0.1.1",
     "tape": "^4.10.2",
