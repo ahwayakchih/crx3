@@ -97,6 +97,27 @@ crx3(['example/example-extension/manifest.json'], {
 ;
 ```
 
+## Issues
+
+### CRX_REQUIRED_PROOF_MISSING
+
+Since version 75.x, Chrome requires Google's web store signature on extension files. CRX3 module does not provide those (that would require access to Google's private key). Following information is "guessed" by checking Chromium's source code at:
+
+- error is returned only if either public key is missing, or "required key" is missing at https://github.com/chromium/chromium/blob/c48c9b176af94f7ec65e20f21594524526d2a830/components/crx_file/crx_verifier.cc#L178
+- "required key" seems to be their predefined key at https://github.com/chromium/chromium/blob/c48c9b176af94f7ec65e20f21594524526d2a830/components/crx_file/crx_verifier.cc#L134 and https://github.com/chromium/chromium/blob/c48c9b176af94f7ec65e20f21594524526d2a830/components/crx_file/crx_verifier.cc#L42
+
+So, there's a chance it is wrong, in which case do not be afraid to create a new [issue](https://github.com/ahwayakchih/crx3/issues) about it.
+
+Unless extension is being installed through `chrome://extensions/` page, with "developer mode" enabled, there's a big chance that users will see `CRX_REQUIRED_PROOF_MISSING` error when they try to install `.crx` file created by CRX3 module.
+
+If extension is installed manually, on MacOS or Linux, it can be installed as long as:
+- it's `update_url` value in `minifest.json` file is correct (see https://developer.chrome.com/extensions/linux_hosting#update_url),
+- it's from server with correct setup (see https://developer.chrome.com/extensions/linux_hosting#hosting).
+
+On Windows, they have to be installed in "developer mode", or through enterprise policy (see https://developer.chrome.com/extensions/hosting_changes).
+
+On all systems, extensions can be installed through a policy setup (see https://www.chromium.org/administrators/configuring-policy-for-extensions and https://www.chromium.org/administrators/policy-list-3).
+
 ## API Documentation
 
 To generate documentation, use:
