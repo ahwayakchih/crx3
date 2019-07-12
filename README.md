@@ -111,7 +111,7 @@ So, there's a chance it is wrong, in which case do not be afraid to create a new
 Unless extension is being installed through `chrome://extensions/` page, with "developer mode" enabled, there's a big chance that users will see `CRX_REQUIRED_PROOF_MISSING` error when they try to install `.crx` file created by CRX3 module.
 
 If extension is installed manually, on MacOS or Linux, it can be installed as long as:
-- it's `update_url` value in `minifest.json` file is correct (see https://developer.chrome.com/extensions/linux_hosting#update_url),
+- it's `update_url` value in `manifest.json` file is correct (see https://developer.chrome.com/extensions/linux_hosting#update_url),
 - it's from server with correct setup (see https://developer.chrome.com/extensions/linux_hosting#hosting).
 
 On Windows, they have to be installed in "developer mode", or through enterprise policy (see https://developer.chrome.com/extensions/hosting_changes).
