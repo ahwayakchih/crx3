@@ -130,7 +130,7 @@ To generate documentation for this module, use:
 npm run doc
 ```
 
-To write extensions, use Extension API for [Chrome/Chromium](https://developer.chrome.com/extensions) and WebExtensions API for [Mozilla](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) browsers. They are quite similar, so it is possible to create an extension that works on all of them (it just needs to be build into different extension file formats - you can use https://github.com/mozilla/web-ext for Mozilla).
+To write extensions, use [Extension API](https://developer.chrome.com/extensions) for Chrome/Chromium and [WebExtensions API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) for Mozilla browsers. They are quite similar, so it is possible to create an extension that works on all of them (it just needs to be build into different extension file formats - you can use https://github.com/mozilla/web-ext for Mozilla).
 
 ## Testing
 
