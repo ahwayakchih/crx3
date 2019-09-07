@@ -20,13 +20,13 @@
     "yazl": "^2.5.1"
   },
   "devDependencies": {
-    "c8": "^5.0.1",
+    "c8": "^5.0.4",
     "docdash": "^1.1.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-jsdoc": "^8.0.1",
+    "eslint": "^6.4.0",
+    "eslint-plugin-jsdoc": "^15.9.4",
     "jsdoc": "github:jsdoc3/jsdoc",
     "tap-diff": "^0.1.1",
-    "tape": "^4.10.2",
+    "tape": "^4.11.0",
     "tape-catch": "^1.0.6"
   },
   "scripts": {
@@ -39,6 +39,7 @@
     "precheckCoverage": "rm -rf ./reports/coverage",
     "checkCoverage": "c8 --clean --report --reporter text --reporter html --reports-dir reports/coverage node ./test/index.js",
     "postcheckCoverage": "mv ./coverage ./reports/coverage && echo Coverage results saved to '`reports/coverage/index.html`'",
+    "checkAudit": "npm shrinkwrap && npm audit > ./reports/audit.log || cat ./reports/audit.log; rm npm-shrinkwrap.json",
     "predoc": "rm -rf ./reports/jsdoc",
     "doc": "jsdoc -d reports/jsdoc -c .jsdoc.json --readme README.md -r index.js lib",
     "postdoc": "echo 'Documentation available at `reports/jsdoc/index.html`'"
