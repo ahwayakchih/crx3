@@ -139,3 +139,11 @@ To run tests, clone module from repository (package does not include required fi
 ```sh
 npm test
 ```
+
+Tests include optional support for checking generated CRX file in Chromium browser when run on Linux system. To make it work:
+
+- make sure that Chrome or Chromium browser is installed,
+- make sure that `CHROME_BIN` environment variable is set with path to the browser's executable,
+- if they were not available when installing CRX3 module, run `npm install` again (to install additional dependencies).
+
+**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/test.json` policy file to "force install" it. That is why it is best to run whole thing in a VM or container like docker (`ahwayakchih/nodeapp:puppeteer`).
