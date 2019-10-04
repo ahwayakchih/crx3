@@ -124,7 +124,7 @@ On all systems, extensions can be installed through a policy setup:
 
 ## API Documentation
 
-To generate documentation for this module, use:
+To generate documentation for this module, clone module from repository (package does not include required files) and use:
 
 ```sh
 npm run doc
@@ -134,7 +134,7 @@ To write extensions, use [Extension API](https://developer.chrome.com/extensions
 
 ## Testing
 
-To run tests, clone module from repository (package does not include required files) and use:
+To run tests, clone module (see [API Documentation](#API-documentation)) and use:
 
 ```sh
 npm test
@@ -146,4 +146,8 @@ Tests include optional support for checking generated CRX file in Chromium brows
 - make sure that `CHROME_BIN` environment variable is set with path to the browser's executable,
 - if they were not available when installing CRX3 module, run `npm install` again (to install additional dependencies).
 
-**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/test.json` policy file to "force install" it. That is why it is best to run whole thing in a VM or container like docker (`ahwayakchih/nodeapp:puppeteer`).
+**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a VM or container like docker, for example:
+
+```sh
+docker run --rm -v $(pwd):/app -v $(pwd)/node_modules:/app/node_modules -it ahwayakchih/nodeapp:puppeteer xvfb-run npm test
+```
