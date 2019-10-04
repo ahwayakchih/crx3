@@ -250,7 +250,7 @@ async function doesItWorkInChrome (t, cfg) {
 			}
 		}
 	};
-	fs.writeFileSync('/etc/chromium/policies/managed/test.json', JSON.stringify(testPolicy));
+	fs.writeFileSync('/etc/chromium/policies/managed/crx3-example-extension-test.json', JSON.stringify(testPolicy));
 
 	/* eslint-disable array-element-newline, multiline-comment-style */
 	const browser = await puppeteer.launch({
