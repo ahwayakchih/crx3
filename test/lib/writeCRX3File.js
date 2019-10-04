@@ -149,7 +149,7 @@ function compareWithExample (t, cfg) {
 
 function tryExec (t, cmd, msg) {
 	try {
-		var margin = (new Array(t._objectPrintDepth)).join('.') + ' '; // eslint-disable-line prefer-template,no-underscore-dangle
+		var margin = ' '.padStart(t._objectPrintDepth, '.'); // eslint-disable-line no-underscore-dangle
 		var stdout = exec(cmd);
 		t.pass(msg);
 		if (stdout && stdout.length > 0) {
