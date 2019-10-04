@@ -22,9 +22,9 @@
   "devDependencies": {
     "c8": "^5.0.4",
     "docdash": "^1.1.1",
-    "eslint": "^6.4.0",
-    "eslint-plugin-jsdoc": "^15.9.4",
-    "jsdoc": "github:jsdoc3/jsdoc",
+    "eslint": "^6.5.1",
+    "eslint-plugin-jsdoc": "^15.9.9",
+    "jsdoc": "^3.6.3",
     "tap-diff": "^0.1.1",
     "tape": "^4.11.0",
     "tape-catch": "^1.0.6"
