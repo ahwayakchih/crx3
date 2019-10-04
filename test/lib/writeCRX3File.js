@@ -276,7 +276,6 @@ async function doesItWorkInChrome (t, cfg) {
 			// `--whitelisted-extension-id ${appId}`, // Adds the given extension ID to all the permission whitelists
 		]
 	}).catch(console.error);
-	t.ok(browser, 'Browser should open fine');
 	/* eslint-enable array-element-newline, multiline-comment-style */
 
 	// Give browser some time to install our CRX
@@ -288,10 +287,12 @@ async function doesItWorkInChrome (t, cfg) {
 		.then(() => page.evaluate(() => document.body.getAttribute('data-id'))) // eslint-disable-line no-undef
 		.catch(t.fail);
 
-	t.strictEqual(data, appId, `Extension "${cfg.crxPath}" should work in Chrome/Chromium`);
-
 	if (browser) {
+		t.strictEqual(data, appId, `Extension "${cfg.crxPath}" should work in Chrome/Chromium`);
 		await browser.close().catch(console.error);
+	}
+	else {
+		t.skip('Could not open browser to test extension in it');
 	}
 
 	testServer.close();
