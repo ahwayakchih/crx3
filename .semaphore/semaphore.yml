@@ -1,0 +1,32 @@
+version: v1.0
+name: Test Linux
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Lint
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+        - name: Lint
+          commands:
+            - npm run checkStyle
+  - name: Test
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+        - name: Test
+          commands:
+            - npm test
+      epilogue:
+        on_fail:
+          commands:
+            - 7z a failed-test.zip test*.zip test*.crx test*.xml
+            - artifact push job failed-test.zip
+execution_time_limit:
+  minutes: 1
