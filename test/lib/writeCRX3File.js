@@ -239,7 +239,7 @@ async function doesItWorkInChrome (t, cfg) {
 	 * https://www.chromium.org/administrators/policy-list-3#ExtensionInstallSources
 	 * https://www.chromium.org/administrators/configuring-policy-for-extensions
 	 */
-	const testPolicy = {
+	const testPolicy = JSON.stringify({
 		ExtensionSettings: {
 			'*': {
 				installation_mode      : 'blocked',
@@ -250,15 +250,16 @@ async function doesItWorkInChrome (t, cfg) {
 				update_url       : `${testServer.url}${path.basename(cfg.xmlPath)}`
 			}
 		}
-	};
+	});
 
 	const msgPolicy = 'Should add policy required for test';
 	if (OS === 'win32') {
-		tryExec(t, 'reg add HKLM\\Software\\Policies\\Google\\Chrome\\ExtensionSettings /v crx3-example-extension-test /t REG_SZ /d ' + JSON.stringify(testPolicy) + '\\0 /f', msgPolicy);
+		tryExec(t, 'reg add HKLM\\Software\\Policies\\Google\\Chrome\\ExtensionSettings /v crx3-example-extension-test /t REG_SZ /d ' + testPolicy + '\\0 /f', msgPolicy);
+		tryExec(t, 'reg query HKLM\\Software\\Policies\\Google\\Chrome\\ExtensionSettings /v crx3-example-extension-test', 'Check if registry was changed');
 	}
 	else {
 		try {
-			fs.writeFileSync('/etc/chromium/policies/managed/crx3-example-extension-test.json', JSON.stringify(testPolicy));
+			fs.writeFileSync('/etc/chromium/policies/managed/crx3-example-extension-test.json', testPolicy);
 		}
 		catch (err) {
 			t.fail(msgPolicy);
