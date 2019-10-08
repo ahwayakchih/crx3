@@ -23,5 +23,12 @@ test_script:
   # run tests
   - npm test
 
+# Post-test scripts
+on_failure:
+  - 7z a failed-test.zip %APPVEYOR_BUILD_FOLDER%\test*.zip
+  - 7z a failed-test.zip %APPVEYOR_BUILD_FOLDER%\test*.crx
+  - 7z a failed-test.zip %APPVEYOR_BUILD_FOLDER%\test*.xml
+  - appveyor PushArtifact failed-test.zip
+
 # Don't actually build.
 build: off
