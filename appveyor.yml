@@ -9,6 +9,12 @@ install:
   # install modules
   - npm install
 
+before_test:
+  # For now, running puppeteer on Windows does not make sense, as Chrome ignores non-webstore extensions anyway.
+  #- set "PATH=C:\Program Files (x86)\Google\Chrome\Application;%PATH%"
+  #- set "CHROME_BIN=chrome"
+  - set "DEBUG=true"
+
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
