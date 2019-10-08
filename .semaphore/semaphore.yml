@@ -21,6 +21,7 @@ blocks:
         commands:
           - checkout
           - cache restore
+          - npm install
       jobs:
         - name: Everything
           commands:
