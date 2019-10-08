@@ -5,23 +5,26 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: Lint
+  - name: Install dependencies
+    task:
+      jobs:
+        - name: npm install and cache
+          commands:
+            - checkout
+            - cache restore
+            - npm install
+            - cache store
+
+  - name: Tests
     task:
       prologue:
         commands:
           - checkout
+          - cache restore
       jobs:
-        - name: Lint
+        - name: Everything
           commands:
             - npm run checkStyle
-  - name: Test
-    task:
-      prologue:
-        commands:
-          - checkout
-      jobs:
-        - name: Test
-          commands:
             - npm test
       epilogue:
         on_fail:
