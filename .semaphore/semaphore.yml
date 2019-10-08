@@ -9,6 +9,7 @@ blocks:
     task:
       prologue:
         commands:
+          - install-package p7zip-full
           - sem-version node 12.11.1
           - checkout
           - cache restore
