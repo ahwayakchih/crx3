@@ -214,7 +214,7 @@ function initTestServer (xmlPath) {
 }
 
 async function doesItWorkInChrome (t, cfg) {
-	if (setPolicy) {
+	if (!setPolicy) {
 		t.skip(`Skipping testing in Chrome because setting up policies is not implemented for ${OS}.`);
 		return false;
 	}
