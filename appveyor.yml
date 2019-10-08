@@ -9,6 +9,10 @@ install:
   # install modules
   - npm install
 
+before_test:
+  - set "PATH=C:\Program Files (x86)\Google\Chrome\Application;%PATH%"
+  - set "CHROME_BIN=chrome"
+
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
