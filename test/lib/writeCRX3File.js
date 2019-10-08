@@ -254,7 +254,7 @@ async function doesItWorkInChrome (t, cfg) {
 
 	const msgPolicy = 'Should add policy required for test';
 	if (OS === 'win32') {
-		tryExec(t, 'reg add HKLM\\Software\\Policies\\Google\\Chrome\\ExtensionSettings /v crx3-example-extension-test /t REG_SZ /d ' + JSON.stringify(testPolicy) + '\\0 /f');
+		tryExec(t, 'reg add HKLM\\Software\\Policies\\Google\\Chrome\\ExtensionSettings /v crx3-example-extension-test /t REG_SZ /d ' + JSON.stringify(testPolicy) + '\\0 /f', msgPolicy);
 	}
 	else {
 		try {
