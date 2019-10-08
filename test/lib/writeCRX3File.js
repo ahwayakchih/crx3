@@ -257,6 +257,8 @@ async function doesItWorkInChrome (t, cfg) {
 		// https://www.chromium.org/administrators/complex-policies-on-windows
 		tryExec(t, 'reg add HKLM\\Software\\Policies\\Google\\Chrome /v ExtensionSettings /t REG_SZ /d ' + JSON.stringify(testPolicy.ExtensionSettings) + ' /f', msgPolicy);
 		tryExec(t, 'reg query HKLM\\Software\\Policies\\Google\\Chrome /v ExtensionSettings', 'Check if registry was changed');
+		// Give system some time to install our policy
+		await new Promise(resolve => setTimeout(resolve, 3000)); // eslint-disable-line no-magic-numbers
 	}
 	else {
 		try {
