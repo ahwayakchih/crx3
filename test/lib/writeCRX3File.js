@@ -1,4 +1,5 @@
 const fs = require('fs');
+const OS = require('os').platform();
 const http = require('http');
 const path = require('path');
 const exec = require('child_process').execSync;
@@ -213,7 +214,12 @@ function initTestServer (xmlPath) {
 }
 
 async function doesItWorkInChrome (t, cfg) {
-	if (!process.env.CHROME_BIN) {
+	if (setPolicy) {
+		t.skip(`Skipping testing in Chrome because setting up policies is not implemented for ${OS}.`);
+		return false;
+	}
+
+	if (!process.env.CHROME_BIN && !puppeteer) {
 		t.skip('Skipping testing in Chrome because `CHROME_BIN` environment variable is empty.');
 		return false;
 	}
@@ -250,14 +256,15 @@ async function doesItWorkInChrome (t, cfg) {
 			}
 		}
 	};
-	fs.writeFileSync('/etc/chromium/policies/managed/crx3-example-extension-test.json', JSON.stringify(testPolicy));
+
+	await setPolicy(testPolicy);
 
 	/* eslint-disable array-element-newline, multiline-comment-style */
 	const browser = await puppeteer.launch({
 		headless         : false,
-		executablePath   : process.env.CHROME_BIN,
+		executablePath   : process.env.CHROME_BIN || null,
 		ignoreDefaultArgs: [
-			// '--headless', // Do not run in headless mode because it disables support for extensions
+			'--headless', // Do not run in headless mode because it disables support for extensions
 			'--disable-extensions', // Do not disable extensions when we want to test them ;P
 			'--disable-background-networking' // Do not prevent browser from force_installing our stuff
 		],
@@ -312,3 +319,12 @@ function include (name) {
 
 	return result;
 }
+
+
+const SET_POLICY = {};
+
+SET_POLICY.linux = async function setPolicyLinux (policy) {
+	return await fs.promises.writeFile('/etc/chromium/policies/managed/crx3-example-extension-test.json', JSON.stringify(policy));
+}
+
+const setPolicy = SET_POLICY[OS] || null;
