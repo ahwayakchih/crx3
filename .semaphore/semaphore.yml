@@ -5,23 +5,15 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: Install dependencies
-    task:
-      jobs:
-        - name: npm install and cache
-          commands:
-            - checkout
-            - cache restore
-            - npm install
-            - cache store
-
   - name: Tests
     task:
       prologue:
         commands:
+          - sem-version node 12.11.1
           - checkout
           - cache restore
           - npm install
+          - cache store
       jobs:
         - name: Everything
           commands:
