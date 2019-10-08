@@ -1,3 +1,4 @@
+const path = require('path');
 const test = require('tape-catch');
 const config = require('../../lib/configuration');
 
@@ -40,25 +41,12 @@ test('configuration', t => {
 		zipPath: true,
 		xmlPath: true
 	});
-	c.setFromOptions({srcPaths: [`${CWD}/${dirName}`]});
+	c.setFromOptions({srcPaths: [path.join(CWD, dirName)]});
 
-	t.strictEqual(c.crxPath, `${CWD}/${dirName}.crx`, 'Should use target directory name as CRX file name');
-	t.strictEqual(c.keyPath, `${CWD}/${dirName}.pem`, 'Should use target directory name as key file name');
-	t.strictEqual(c.zipPath, `${CWD}/${dirName}.zip`, 'Should use target directory name as ZIP file name');
-	t.strictEqual(c.xmlPath, `${CWD}/${dirName}.xml`, 'Should use target directory name as XML file name');
-
-	c = config().setFromOptions({
-		crxPath: true,
-		keyPath: true,
-		zipPath: true,
-		xmlPath: true
-	});
-	c.setFromOptions({srcPaths: [`${CWD}/${dirName}/manifest.json`]});
-
-	t.strictEqual(c.crxPath, `${CWD}/${dirName}.crx`, 'Should use manifest.json directory name as CRX file name');
-	t.strictEqual(c.keyPath, `${CWD}/${dirName}.pem`, 'Should use manifest.json directory name as key file name');
-	t.strictEqual(c.zipPath, `${CWD}/${dirName}.zip`, 'Should use manifest.json directory name as ZIP file name');
-	t.strictEqual(c.xmlPath, `${CWD}/${dirName}.xml`, 'Should use manifest.json directory name as XML file name');
+	t.strictEqual(c.crxPath, path.join(CWD, `${dirName}.crx`), 'Should use target directory name as CRX file name');
+	t.strictEqual(c.keyPath, path.join(CWD, `${dirName}.pem`), 'Should use target directory name as key file name');
+	t.strictEqual(c.zipPath, path.join(CWD, `${dirName}.zip`), 'Should use target directory name as ZIP file name');
+	t.strictEqual(c.xmlPath, path.join(CWD, `${dirName}.xml`), 'Should use target directory name as XML file name');
 
 	c = config().setFromOptions({
 		crxPath: true,
@@ -66,12 +54,25 @@ test('configuration', t => {
 		zipPath: true,
 		xmlPath: true
 	});
-	c.setFromOptions({srcPaths: [`${CWD}/${dirName}/some-script.js`, `${CWD}/${dirName}/manifest.json`]});
+	c.setFromOptions({srcPaths: [path.join(CWD, dirName, 'manifest.json')]});
 
-	t.strictEqual(c.crxPath, `${CWD}/${dirName}.crx`, 'Should find and use manifest.json directory name as CRX file name');
-	t.strictEqual(c.keyPath, `${CWD}/${dirName}.pem`, 'Should find and use manifest.json directory name as key file name');
-	t.strictEqual(c.zipPath, `${CWD}/${dirName}.zip`, 'Should find and use manifest.json directory name as ZIP file name');
-	t.strictEqual(c.xmlPath, `${CWD}/${dirName}.xml`, 'Should find and use manifest.json directory name as XML file name');
+	t.strictEqual(c.crxPath, path.join(CWD, `${dirName}.crx`), 'Should use manifest.json directory name as CRX file name');
+	t.strictEqual(c.keyPath, path.join(CWD, `${dirName}.pem`), 'Should use manifest.json directory name as key file name');
+	t.strictEqual(c.zipPath, path.join(CWD, `${dirName}.zip`), 'Should use manifest.json directory name as ZIP file name');
+	t.strictEqual(c.xmlPath, path.join(CWD, `${dirName}.xml`), 'Should use manifest.json directory name as XML file name');
+
+	c = config().setFromOptions({
+		crxPath: true,
+		keyPath: true,
+		zipPath: true,
+		xmlPath: true
+	});
+	c.setFromOptions({srcPaths: [path.join(CWD, dirName, 'some-script.js'), path.join(CWD, dirName, 'manifest.json')]});
+
+	t.strictEqual(c.crxPath, path.join(CWD, `${dirName}.crx`), 'Should find and use manifest.json directory name as CRX file name');
+	t.strictEqual(c.keyPath, path.join(CWD, `${dirName}.pem`), 'Should find and use manifest.json directory name as key file name');
+	t.strictEqual(c.zipPath, path.join(CWD, `${dirName}.zip`), 'Should find and use manifest.json directory name as ZIP file name');
+	t.strictEqual(c.xmlPath, path.join(CWD, `${dirName}.xml`), 'Should find and use manifest.json directory name as XML file name');
 
 	t.end();
 });
