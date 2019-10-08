@@ -254,6 +254,7 @@ async function doesItWorkInChrome (t, cfg) {
 
 	const msgPolicy = 'Should add policy required for test';
 	if (OS === 'win32') {
+		tryExec(t, `curl -v ${testServer.url}${path.basename(cfg.xmlPath)}`, 'Check if curl works');
 		tryExec(t, 'reg add HKLM\\Software\\Policies\\Google\\Chrome\\ExtensionSettings /v crx3-example-extension-test /t REG_SZ /d ' + testPolicy + '\\0 /f', msgPolicy);
 		tryExec(t, 'reg query HKLM\\Software\\Policies\\Google\\Chrome\\ExtensionSettings /v crx3-example-extension-test', 'Check if registry was changed');
 	}
