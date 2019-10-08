@@ -141,10 +141,12 @@ function compareWithExample (t, cfg) {
 
 	return doesItWorkInChrome(t, cfg)
 		.then(worked => worked || tryExec(t, `diff "${cfg.crxPath}" "${example.crx}"`, `Created "${cfg.crxPath}" should match "${example.crx}"`))
-		.then(() => {
-			fs.unlinkSync(cfg.xmlPath);
-			fs.unlinkSync(cfg.crxPath);
-			fs.unlinkSync(cfg.zipPath);
+		.then(worked => {
+			if (worked) {
+				fs.unlinkSync(cfg.xmlPath);
+				fs.unlinkSync(cfg.crxPath);
+				fs.unlinkSync(cfg.zipPath);
+			}
 		});
 }
 
