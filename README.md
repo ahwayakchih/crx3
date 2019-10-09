@@ -1,7 +1,7 @@
 CRX3
 ====
 
-Build status: [Linux & MacOS ![Linux & MacOS](https://api.cirrus-ci.com/github/ahwayakchih/crx3.svg)](https://cirrus-ci.com/github/ahwayakchih/crx3), [Windows ![Windows](https://ci.appveyor.com/api/projects/status/oylw6nx8ebj5rw1e?svg=true)](https://ci.appveyor.com/project/ahwayakchih/crx3).
+Build status: Linux & MacOS [![Linux & MacOS](https://api.cirrus-ci.com/github/ahwayakchih/crx3.svg)](https://cirrus-ci.com/github/ahwayakchih/crx3), Windows [![Windows](https://ci.appveyor.com/api/projects/status/oylw6nx8ebj5rw1e?svg=true)](https://ci.appveyor.com/project/ahwayakchih/crx3).
 
 This module allows you to create web extension files for Chromium and Google Chrome browsers.
 
