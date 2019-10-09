@@ -1,0 +1,21 @@
+task:
+  matrix:
+    - name: linux
+      container:
+        image: node:latest
+    - name: macos
+      osx_instance:
+        image: mojave-base
+      node_script:
+        - brew install node@12
+        - brew link --force node@12
+
+  node_modules_cache:
+    folder: node_modules
+    fingerprint_script:
+        - echo $CIRRUS_OS
+        - node --version
+        - cat package.json
+    populate_script: npm install
+
+  test_script: npm test

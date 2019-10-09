@@ -81,7 +81,7 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 	};
 
 	const manifestPath = path.join(CWD, 'example', 'example-extension', 'manifest.json');
-	const utime = new Date('2019-03-24T23:29:00.000Z');
+	const utime = 1553470140; // '2019-03-24T23:29:00.000Z'
 	try {
 		fs.utimesSync(manifestPath, utime, utime);
 		fs.utimesSync(path.join(path.dirname(manifestPath), 'example.js'), utime, utime);
@@ -132,8 +132,10 @@ function compareWithExample (t, cfg) {
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
 	t.ok(fs.existsSync(cfg.zipPath), `"${cfg.zipPath}" file should exist`);
 	t.ok(fs.existsSync(example.zip), `"${example.zip}" file should exist`);
-	const zipExample = tryExec(t, `unzip -v ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`).replace(example.zip, '');
-	const zipTest = tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`).replace(cfg.zipPath, '');
+	const zipExample = tryExec(t, `unzip -v ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`).replace(example.zip, '').replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
+	const selfTest = zipExample.match(/(ad185b2c\s+example.js|f643ef3e\smanifest.json)/);
+	t.ok(selfTest && selfTest.length === 2, 'Should pass self-test of unzip output');
+	const zipTest = tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`).replace(cfg.zipPath, '').replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
 	t.strictEqual(zipExample, zipTest, `Created "${cfg.zipPath}" should match "${example.zip}"`);
 
 	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
