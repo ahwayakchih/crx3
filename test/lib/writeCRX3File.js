@@ -13,6 +13,9 @@ const CWD = process.cwd();
 // Port number should be the same as the one found in `example/example-extension` files.
 const PORT = 8080;
 
+const FILE_CHECK_DELAY = 1500;
+const NUMBER_OF_FILES_IN_EXAMPLE_ZIP = 2;
+
 test('writeCRX3File', t => {
 	t.strictEqual(typeof writeCRX3File, 'function', 'Should export a function');
 
@@ -45,7 +48,7 @@ function testWriteCRX3FileWithoutArgs (t) {
 				t.ok(err, msg);
 			}
 			t.end();
-		}, 1000));
+		}, FILE_CHECK_DELAY));
 }
 
 function testWriteCRX3FileWithoutManifestJSON (t) {
@@ -58,7 +61,7 @@ function testWriteCRX3FileWithoutManifestJSON (t) {
 	p
 		.then(() => t.fail('Returned promise should not resolve'))
 		.catch(() => t.pass('Returned promise should reject'))
-		.finally(() => {
+		.finally(() => setTimeout(() => {
 			try {
 				if (fs.statSync(crxPath).size > 0) {
 					throw new Error(`"${crxPath} file is not empty`);
@@ -69,7 +72,7 @@ function testWriteCRX3FileWithoutManifestJSON (t) {
 				t.error(err, `Should create an empty "${crxPath}" file`);
 			}
 			t.end();
-		});
+		}, FILE_CHECK_DELAY));
 }
 
 function testWriteCRX3FileWithFilesAndOptions (t) {
@@ -132,10 +135,14 @@ function compareWithExample (t, cfg) {
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
 	t.ok(fs.existsSync(cfg.zipPath), `"${cfg.zipPath}" file should exist`);
 	t.ok(fs.existsSync(example.zip), `"${example.zip}" file should exist`);
-	const zipExample = tryExec(t, `unzip -v ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`).replace(example.zip, '').replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
-	const selfTest = zipExample.match(/(ad185b2c\s+example.js|f643ef3e\smanifest.json)/);
-	t.ok(selfTest && selfTest.length === 2, 'Should pass self-test of unzip output');
-	const zipTest = tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`).replace(cfg.zipPath, '').replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
+	const zipExample = tryExec(t, `unzip -v ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`)
+		.replace(example.zip, '')
+		.replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
+	const selfTest = zipExample.match(/(ad185b2c\s+example.js|f643ef3e\smanifest.json)/); // eslint-disable-line prefer-named-capture-group
+	t.ok(selfTest && selfTest.length === NUMBER_OF_FILES_IN_EXAMPLE_ZIP, 'Should pass self-test of unzip output');
+	const zipTest = tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`)
+		.replace(cfg.zipPath, '')
+		.replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
 	t.strictEqual(zipExample, zipTest, `Created "${cfg.zipPath}" should match "${example.zip}"`);
 
 	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
@@ -291,7 +298,7 @@ async function doesItWorkInChrome (t, cfg) {
 	/* eslint-enable array-element-newline, multiline-comment-style */
 
 	// Give browser some time to install our CRX
-	await new Promise(resolve => setTimeout(resolve, 2000)); // eslint-disable-line no-magic-numbers
+	await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY));
 
 	const page = browser && await browser.newPage();
 	const data = page && await page.goto('http://127.0.0.1:8080/')
@@ -323,6 +330,10 @@ async function shouldItWorkInChrome (t, cfg, example) {
 	const zip = fs.createReadStream(example.zip);
 	// Recreate CRX from example ZIP, because ZIP can differ by a few bytes from system to system (possibly uid and gid of files?).
 	await writeCRX3File(zip, {crxPath, keyPath});
+
+	if (FILE_CHECK_DELAY) {
+		await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)); // eslint-disable-line no-magic-numbers
+	}
 
 	return tryExec(t, `diff "${crxPath}" "${example.crx}"`, `Created "${crxPath}" should match "${example.crx}"`);
 }

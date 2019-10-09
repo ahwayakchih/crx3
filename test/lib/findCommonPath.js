@@ -6,9 +6,9 @@ test('findCommonPath', t => {
 	t.strictEqual(typeof findCommonPath, 'function', 'Should export a function');
 
 	const a = `a${path.sep}`;
-	const ae = path.join('a','example.txt');
-	const abe = path.join('a','b','example.txt');
-	const abce = path.join('a','b','c','example.txt'); 
+	const ae = path.join('a', 'example.txt');
+	const abe = path.join('a', 'b', 'example.txt');
+	const abce = path.join('a', 'b', 'c', 'example.txt');
 	t.strictEqual(findCommonPath(), '', 'Should return empty string when called without arguments');
 	t.strictEqual(findCommonPath([]), '', 'Should return empty string when files array is empty');
 	t.strictEqual(findCommonPath(['example.txt']), '', 'Should return empty string when no file has separator in path');
@@ -17,7 +17,7 @@ test('findCommonPath', t => {
 	t.strictEqual(findCommonPath([ae, abe]), a, '[a/f, a/b/f] should return "a/"');
 	t.strictEqual(findCommonPath([abe, ae]), a, '[a/b/f, a/f] should return "a/"');
 	t.strictEqual(findCommonPath([abe, abce, ae]), a, '[a/b/f, a/b/c/f, a/f] should return "a/"');
-	t.strictEqual(findCommonPath([abe, abce]), path.join('a','b') + path.sep, '[a/b/f, a/b/c/f] should return "a/b/"');
+	t.strictEqual(findCommonPath([abe, abce]), path.join('a', 'b') + path.sep, '[a/b/f, a/b/c/f] should return "a/b/"');
 
 	t.end();
 });
