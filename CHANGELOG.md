@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**v1.1.1** - 2019-10-09
+
+- Output error info when private key cannot be loaded
+- Finish CRX stream when no manifes.json is found
+- Setup CI runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS)
+
 **v1.1.0** - 2019-10-04
 
 - Add support for manifest files
