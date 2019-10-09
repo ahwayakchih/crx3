@@ -1,13 +1,15 @@
 CRX3
 ====
 
+Build status: [![Linux & MacOS](https://api.cirrus-ci.com/github/ahwayakchih/crx3.svg)](https://cirrus-ci.com/github/ahwayakchih/crx3), [![Windows](https://ci.appveyor.com/api/projects/status/oylw6nx8ebj5rw1e?svg=true)](https://ci.appveyor.com/project/ahwayakchih/crx3).
+
 This module allows you to create web extension files for Chromium and Google Chrome browsers.
 
 It creates CRXv3 files, which work for Chrome versions 64.0.3242 and above.
 
 If you need to create web extension file for older browser versions, where CRXv3 is not supported, use [CRX module](https://github.com/oncletom/crx) instead.
 
-It requires Node.js version 11.6.0 (or above) to run.
+It requires Node.js version 12 (or above) to run.
 
 # Installation
 
