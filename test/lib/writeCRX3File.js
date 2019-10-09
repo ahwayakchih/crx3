@@ -140,7 +140,7 @@ function compareWithExample (t, cfg) {
 	t.ok(fs.existsSync(example.crx), `"${example.crx}" file should exist`);
 
 	return doesItWorkInChrome(t, cfg)
-		.then(worked => worked || tryExec(t, `diff "${cfg.crxPath}" "${example.crx}"`, `Created "${cfg.crxPath}" should match "${example.crx}"`))
+		.then(worked => worked || shouldItWorkInChrome(t, cfg, example))
 		.then(worked => {
 			if (worked) {
 				fs.unlinkSync(cfg.xmlPath);
@@ -307,6 +307,21 @@ async function doesItWorkInChrome (t, cfg) {
 	testServer.close();
 
 	return true;
+}
+
+// If we cannot test in Chrome/Chromium directly, we can try to compare output to `example-extension.crx`` which was tested.
+async function shouldItWorkInChrome (t, cfg, example) {
+	const {
+		crxPath,
+		keyPath
+	} = cfg;
+
+	// Example ZIP was tested by now, so it should be ok to reuse it.
+	const zip = fs.createReadStream(example.zip);
+	// Recreate CRX from example ZIP, because ZIP can differ by a few bytes from system to system (possibly uid and gid of files?).
+	await writeCRX3File(zip, {crxPath, keyPath});
+
+	return tryExec(t, `diff "${crxPath}" "${example.crx}"`, `Created "${crxPath}" should match "${example.crx}"`);
 }
 
 function include (name) {
