@@ -34,7 +34,8 @@ function testWriteCRX3FileWithoutArgs (t) {
 	p
 		.then(() => t.fail('Returned promise should not resolve'))
 		.catch(() => t.pass('Returned promise should reject'))
-		.finally(() => {
+		// Delay final test a bit, so CI like appveyor has time to actually add file in file system.
+		.finally(() => setTimeout(() => {
 			var msg = `Should not create any "${crxPath}" file`;
 			try {
 				fs.statSync(crxPath);
@@ -44,7 +45,7 @@ function testWriteCRX3FileWithoutArgs (t) {
 				t.ok(err, msg);
 			}
 			t.end();
-		});
+		}, 1000));
 }
 
 function testWriteCRX3FileWithoutManifestJSON (t) {
