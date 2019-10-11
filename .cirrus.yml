@@ -3,6 +3,18 @@ task:
     - name: linux
       container:
         image: node:latest
+    - name: linux + puppeteer
+      container:
+        image: ahwayakchih/nodeapp:puppeteer
+      env:
+        DISPLAY: ":99"
+        XAUTHORITY: /tmp/crx3.puppeteer/Xauthority
+      xvfb_start_background_script:
+        # Based on Xauthority stuff from xvfb-run:
+        # https://salsa.debian.org/xorg-team/xserver/xorg-server/blob/debian-unstable/debian/local/xvfb-run
+        - mkdir -p $(dirname $XAUTHORITY)
+          touch "$XAUTHORITY";
+          Xvfb $DISPLAY -screen 0 1024x768x24 -nolisten tcp -auth $XAUTHORITY
     - name: macos
       osx_instance:
         image: mojave-base
@@ -14,6 +26,7 @@ task:
     folder: node_modules
     fingerprint_script:
         - echo $CIRRUS_OS
+        - echo $CHROME_BIN
         - node --version
         - cat package.json
     populate_script: npm install

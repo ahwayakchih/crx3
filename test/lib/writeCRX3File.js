@@ -342,7 +342,7 @@ async function doesItWorkInChrome (t, cfg) {
 
 	testServer.close();
 
-	return true;
+	return Boolean(browser);
 }
 
 // If we cannot test in Chrome/Chromium directly, we can try to compare output to `example-extension.crx`` which was tested.
