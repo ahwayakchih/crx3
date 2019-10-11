@@ -2,6 +2,10 @@
 environment:
   nodejs_version: "12"
 
+# Cache node_modules between builds
+cache:
+  - node_modules -> package.json, appveyor.yml
+
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
