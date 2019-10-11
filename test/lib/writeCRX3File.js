@@ -13,8 +13,10 @@ const CWD = process.cwd();
 // Port number should be the same as the one found in `example/example-extension` files.
 const PORT = 8080;
 
-const FILE_CHECK_DELAY = 1500;
 const NUMBER_OF_FILES_IN_EXAMPLE_ZIP = 2;
+const DEFAULT_FILE_CHECK_DELAY = 1500;
+
+const FILE_CHECK_DELAY = parseInt(process.env.FILE_CHECK_DELAY || 0, 10) || DEFAULT_FILE_CHECK_DELAY;
 
 test('writeCRX3File', t => {
 	t.strictEqual(typeof writeCRX3File, 'function', 'Should export a function');
