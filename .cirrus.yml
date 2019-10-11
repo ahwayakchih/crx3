@@ -32,3 +32,7 @@ task:
     populate_script: npm install
 
   test_script: npm test
+
+  on_failure:
+    failed_artifacts:
+      path: "test*.*"
