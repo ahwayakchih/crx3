@@ -149,7 +149,13 @@ Tests include optional support for checking generated CRX file in Chromium brows
 - make sure that `CHROME_BIN` environment variable is set with path to the browser's executable,
 - if they were not available when installing CRX3 module, run `npm install` again (to install additional dependencies).
 
-**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a VM or container like docker, for example:
+**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a virtual machine, e.g., using `qemu`, or in a container, e.g., using `podman` or `docker`, for example:
+
+```sh
+podman run --rm -v $(pwd):/app -v $(pwd)/node_modules:/app/node_modules --userns=keep-id -it ahwayakchih/nodeapp:puppeteer xvfb-run npm test
+```
+
+or:
 
 ```sh
 docker run --rm -v $(pwd):/app -v $(pwd)/node_modules:/app/node_modules -it ahwayakchih/nodeapp:puppeteer xvfb-run npm test
