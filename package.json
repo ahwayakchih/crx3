@@ -39,7 +39,7 @@
     "checkStyle": "eslint index.js lib/*.js test/** bin/*  > ./reports/eslint.txt || echo 'ESLint results saved to `reports/eslint.txt`' && cat ./reports/eslint.txt",
     "precheckCoverage": "rm -rf ./reports/coverage",
     "checkCoverage": "c8 --clean --report --reporter text --reporter html --reports-dir reports/coverage node ./test/index.js",
-    "postcheckCoverage": "mv ./coverage ./reports/coverage && echo Coverage results saved to '`reports/coverage/index.html`'",
+    "postcheckCoverage": "echo Coverage results saved to '`reports/coverage/index.html`'",
     "checkAudit": "npm shrinkwrap && npm audit > ./reports/audit.log || cat ./reports/audit.log; rm npm-shrinkwrap.json",
     "predoc": "rm -rf ./reports/jsdoc",
     "doc": "jsdoc -d reports/jsdoc -c .jsdoc.json --readme README.md -r index.js lib",
