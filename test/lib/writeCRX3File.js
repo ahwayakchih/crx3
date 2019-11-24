@@ -1,13 +1,15 @@
 const fs = require('fs');
 const OS = require('os').platform();
-const http = require('http');
 const path = require('path');
-const exec = require('child_process').execSync;
 const test = require('tape-catch');
 const writeCRX3File = require('../../lib/writeCRX3File');
 
+const include = require('./support/include');
+const setPolicy = require('./support/setPolicy');
+const tryExec = require('./support/tryExec');
+
 const puppeteer = (process.env.CHROME_BIN && include('puppeteer-core')) || include('puppeteer') || null;
-const serveFiles = puppeteer && include('serve-files');
+const getServer = puppeteer && require('./support/server'); // eslint-disable-line global-require
 
 const CWD = process.cwd();
 // Port number should be the same as the one found in `example/example-extension` files.
@@ -15,6 +17,7 @@ const PORT = 8080;
 
 const NUMBER_OF_FILES_IN_EXAMPLE_ZIP = 2;
 const DEFAULT_FILE_CHECK_DELAY = 1500;
+const HTTP_OK = 200;
 
 const FILE_CHECK_DELAY = parseInt(process.env.FILE_CHECK_DELAY || 0, 10) || DEFAULT_FILE_CHECK_DELAY;
 
@@ -162,95 +165,6 @@ function compareWithExample (t, cfg) {
 		});
 }
 
-function tryExec (t, cmd, msg) {
-	try {
-		var margin = ' '.padStart(t._objectPrintDepth || 0, '.'); // eslint-disable-line no-underscore-dangle
-		var stdout = exec(cmd);
-		t.pass(msg);
-		if (stdout && stdout.length > 0) {
-			stdout = stdout.toString('utf8');
-			t.comment(margin + stdout.replace(/\n+/g, '\n' + margin)); // eslint-disable-line prefer-template
-			return stdout || true;
-		}
-		return true;
-	}
-	catch (err) {
-		t.error((err.stderr && err.stderr.toString('utf8'))
-			|| (err.stdout && err.stdout.toString('utf8'))
-			|| err.message, msg);
-		return false;
-	}
-}
-
-function initTestServer (xmlPath) {
-	const HTTP_OK = 200;
-
-	const fileResponse = serveFiles && serveFiles.createFileResponseHandler({
-		followSymbolicLinks: false,
-		documentRoot       : process.cwd()
-	});
-
-	const server = fileResponse && http.createServer((req, res) => {
-		if (process.env.DEBUG) {
-			console.log(`TEST SERVER CALLED FOR ${req.url}`, req.headers);
-		}
-
-		/*
-		 * Our test extension's manifest file points to example file,
-		 * so, just in case Chrome tries to access it, redirect it to a test-generated file.
-		 */
-		if (req.url.startsWith('/example-extension.xml')) {
-			req.url = `/${xmlPath}`;
-		}
-
-		if (req.url !== '/') {
-			fileResponse(req, res);
-			return;
-		}
-
-		const html = Buffer.from('<html><head><title>Test page</title></head><body>Test content</body></html>', 'utf8');
-		res.writeHead(HTTP_OK, 'OK', {
-			'Content-Type'  : 'text/html; charset=utf-8',
-			'Content-Length': html.length
-		});
-		res.end(html);
-	});
-
-	return server && new Promise(resolve => {
-		server.listen(PORT, '127.0.0.1', () => {
-			server.url = `http://127.0.0.1:${server.address().port}/`;
-			if (process.env.DEBUG) {
-				console.log(`TEST SERVER LISTENING at ${server.url} with docroot set to ${process.cwd()}`);
-			}
-			resolve(server);
-		});
-	});
-}
-
-/* eslint-disable require-await,func-name-matching */
-const SET_POLICY = {};
-
-SET_POLICY.linux = async function setPolicyLinux (policy) {
-	return fs.promises.writeFile('/etc/chromium/policies/managed/crx3-example-extension-test.json', JSON.stringify(policy));
-};
-
-SET_POLICY.win32 = async function setPolicyWindows (policy) {
-	const fakeT = {
-		pass   : console.log,
-		comment: console.log,
-		error  : console.error
-	};
-
-	// https://www.chromium.org/administrators/complex-policies-on-windows
-	tryExec(fakeT, `reg add HKLM\\Software\\Policies\\Google\\Chrome /v ExtensionSettings /t REG_SZ /d ${JSON.stringify(policy.ExtensionSettings)} /f`, 'Setting policy in Windows registry should work');
-	if (process.env.DEBUG) {
-		tryExec(fakeT, 'reg query HKLM\\Software\\Policies\\Google\\Chrome /v ExtensionSettings', 'Registry should contain our test policy');
-	}
-};
-
-const setPolicy = SET_POLICY[OS] || null;
-/* eslint-enable require-await,func-name-matching */
-
 async function doesItWorkInChrome (t, cfg) {
 	if (!setPolicy) {
 		t.skip(`Skipping testing in Chrome because setting up policies is not implemented for ${OS}.`);
@@ -267,7 +181,7 @@ async function doesItWorkInChrome (t, cfg) {
 		return false;
 	}
 
-	const testServer = await initTestServer(path.basename(cfg.xmlPath));
+	const testServer = await getServer(PORT, cfg);
 	if (!testServer) {
 		t.skip('Skipping testing in Chrome because test web server could not be started.');
 		return false;
@@ -282,7 +196,7 @@ async function doesItWorkInChrome (t, cfg) {
 	 * https://www.chromium.org/administrators/policy-list-3#ExtensionInstallSources
 	 * https://www.chromium.org/administrators/configuring-policy-for-extensions
 	 */
-	const testPolicy = {
+	await setPolicy({
 		ExtensionSettings: {
 			'*': {
 				installation_mode      : 'blocked',
@@ -293,9 +207,10 @@ async function doesItWorkInChrome (t, cfg) {
 				update_url       : `${testServer.url}${path.basename(cfg.xmlPath)}`
 			}
 		}
-	};
+	});
 
-	await setPolicy(testPolicy);
+	// Give us time to start browser and wait for it to request CRX file
+	const extensionRequested = testServer.waitFor(`/${path.basename(cfg.crxPath)}`);
 
 	/* eslint-disable array-element-newline, multiline-comment-style */
 	const browser = await puppeteer.launch({
@@ -323,24 +238,31 @@ async function doesItWorkInChrome (t, cfg) {
 	}).catch(console.error);
 	/* eslint-enable array-element-newline, multiline-comment-style */
 
+	if (!browser) {
+		t.fail('Could not open browser to test extension in it');
+		testServer.kill();
+		return false;
+	}
+
 	// Give browser some time to install our CRX
-	await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY));
+	const page = await extensionRequested
+		.then(status => t.strictEqual(status, HTTP_OK, 'TestServer response to extension request should be 200 OK'))
+		.then(() => browser.newPage());
 
-	const page = browser && await browser.newPage();
-	const data = page && await page.goto('http://127.0.0.1:8080/')
-		.then(() => page.waitForSelector('body[data-name]', {timeout: 3000})) // eslint-disable-line no-magic-numbers
+	await page.goto('http://127.0.0.1:8080/')
+		// Chromium seems to request for XML file AGAIN and only after that extension seems to work OK
+		.then(() => testServer.waitFor(`/${path.basename(cfg.xmlPath)}`))
+		// There's some additional delay (for XML parsing?) needed
+		.then(() => new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)))
+		// Reload page or it won't work
+		.then(() => page.reload())
+		// Finally! Test if extension was initialized and worked
+		.then(() => page.waitForSelector('body[data-id]', {timeout: FILE_CHECK_DELAY})) // eslint-disable-line no-magic-numbers
 		.then(() => page.evaluate(() => document.body.getAttribute('data-id'))) // eslint-disable-line no-undef
-		.catch(t.fail);
-
-	if (browser) {
-		t.strictEqual(data, appId, `Extension "${cfg.crxPath}" should work in Chrome/Chromium`);
-		await browser.close().catch(console.error);
-	}
-	else {
-		t.skip('Could not open browser to test extension in it');
-	}
-
-	testServer.close();
+		.then(foundId => t.strictEqual(foundId, appId, `Extension "${cfg.crxPath}" should work in Chrome/Chromium`))
+		// Cleanup
+		.catch(t.fail)
+		.finally(() => browser.close().catch(console.error) && testServer.kill());
 
 	return Boolean(browser);
 }
@@ -362,17 +284,4 @@ async function shouldItWorkInChrome (t, cfg, example) {
 	}
 
 	return tryExec(t, `diff "${crxPath}" "${example.crx}"`, `Created "${crxPath}" should match "${example.crx}"`);
-}
-
-function include (name) {
-	var result = null;
-	try {
-		result = require(name); // eslint-disable-line global-require
-	}
-	catch (err) {
-		// Ignore error.
-		result = null;
-	}
-
-	return result;
 }
