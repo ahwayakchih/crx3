@@ -109,9 +109,9 @@ Since version 75.x, Chrome requires Google's web store signature on extension fi
 - https://github.com/chromium/chromium/blob/c48c9b176af94f7ec65e20f21594524526d2a830/components/crx_file/crx_verifier.cc#L178 error is returned only if either public or "required key" key is missing,
 - https://github.com/chromium/chromium/blob/c48c9b176af94f7ec65e20f21594524526d2a830/components/crx_file/crx_verifier.cc#L134 and https://github.com/chromium/chromium/blob/c48c9b176af94f7ec65e20f21594524526d2a830/components/crx_file/crx_verifier.cc#L42 "required key" seems to be their predefined key.
 
-So, there's a chance it is wrong, in which case do not be afraid to create a new [issue](https://github.com/ahwayakchih/crx3/issues) about it.
+So, there's a chance i got it wrong, in which case do not be afraid to create a new [issue](https://github.com/ahwayakchih/crx3/issues) about it.
 
-Unless extension is being installed through `chrome://extensions/` page, with "developer mode" enabled, there's a big chance that users will see `CRX_REQUIRED_PROOF_MISSING` error when they try to install `.crx` file created by CRX3 module.
+Unless extension is being installed through the `chrome://extensions/` page, with "developer mode" enabled beforehand (it has to be enabled and then Chrome has to be restarted), there's a big chance that users will see `CRX_REQUIRED_PROOF_MISSING` error when they try to install `.crx` file created with CRX3 module.
 
 If extension is installed manually, on MacOS or Linux, it can be installed as long as:
 
@@ -149,13 +149,15 @@ Tests include optional support for checking generated CRX file in Chromium brows
 - make sure that `CHROME_BIN` environment variable is set with path to the browser's executable,
 - if they were not available when installing CRX3 module, run `npm install` again (to install additional dependencies).
 
-**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a virtual machine, e.g., using `qemu`, or in a container, e.g., using `podman` or `docker`, for example:
+**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a virtual machine, e.g., using [`qemu`](https://www.qemu.org/), or in a container, e.g., using [`podman`](https://podman.io/) or [`docker`](https://www.docker.com/).
+
+Using `podman`:
 
 ```sh
 podman run --rm -v $(pwd):/app -v $(pwd)/node_modules:/app/node_modules --userns=keep-id -it ahwayakchih/nodeapp:puppeteer xvfb-run npm test
 ```
 
-or:
+Using `docker`:
 
 ```sh
 docker run --rm -v $(pwd):/app -v $(pwd)/node_modules:/app/node_modules -it ahwayakchih/nodeapp:puppeteer xvfb-run npm test
