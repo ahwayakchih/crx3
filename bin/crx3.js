@@ -2,9 +2,10 @@
 
 const writeCRX3File = require('../');
 const config = require('../lib/configuration')().setFromArgv();
+const hasSrcPaths = config.srcPaths && config.srcPaths.length > 0;
 
 /* eslint-disable no-process-exit */
-if (process.stdin.isTTY && (!config.srcPaths || config.srcPaths.length < 1)) {
+if (process.stdin.isTTY && !hasSrcPaths) {
 	/* eslint-disable prefer-named-capture-group */
 	console.log(config
 		.helpText()
@@ -15,7 +16,7 @@ if (process.stdin.isTTY && (!config.srcPaths || config.srcPaths.length < 1)) {
 	process.exit();
 }
 
-writeCRX3File(process.stdin.isTTY ? config.srcPaths : process.stdin, config)
+writeCRX3File(process.stdin.isTTY || hasSrcPaths ? config.srcPaths : process.stdin, config)
 	.then(options => {
 		if (options.newKey) {
 			console.log(`Private key file created at "${options.newKey}"`);
