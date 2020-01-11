@@ -1,10 +1,16 @@
 Changelog
 =========
 
+**v1.1.2** - 2020-01-11
+
+- Support running without TTY while allowing to specify sources, instead of piping ZIP content
+- Improve tests: test generated CRX with puppeteer on Cirrus CI, keep failed artifacts, cache modules, etc...
+- It works with Podman (instead of Docker) too!
+
 **v1.1.1** - 2019-10-09
 
 - Output error info when private key cannot be loaded
-- Finish CRX stream when no manifes.json is found
+- Finish CRX stream when no manifest.json is found
 - Setup CI runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS)
 
 **v1.1.0** - 2019-10-04
