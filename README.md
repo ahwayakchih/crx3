@@ -1,7 +1,7 @@
 CRX3
 ====
 
-This module allows you to create web extension files for Chromium and Google Chrome browsers.
+This module allows you to create web extension files for Chromium, Google Chrome and all other browsers supporting the file format and API, e.g., Opera.
 
 It creates CRXv3 files, which work for Chrome versions 64.0.3242 and above.
 
@@ -102,7 +102,7 @@ crx3(['example/example-extension/manifest.json'], {
 
 ## Issues
 
-### CRX_REQUIRED_PROOF_MISSING
+### CRX_REQUIRED_PROOF_MISSING (Chrome and Chromium)
 
 Since version 75.x, Chrome requires Google's web store signature on extension files. CRX3 module does not provide those (that would require access to Google's private key). Following information is "guessed" by checking Chromium's source code at:
 
