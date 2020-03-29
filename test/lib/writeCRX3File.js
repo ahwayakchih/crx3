@@ -196,7 +196,7 @@ async function doesItWorkInChrome (t, cfg) {
 	 * https://www.chromium.org/administrators/policy-list-3#ExtensionInstallSources
 	 * https://www.chromium.org/administrators/configuring-policy-for-extensions
 	 */
-	await setPolicy({
+	const policyError = await setPolicy({
 		ExtensionSettings: {
 			'*': {
 				installation_mode      : 'blocked',
@@ -207,7 +207,14 @@ async function doesItWorkInChrome (t, cfg) {
 				update_url       : `${testServer.url}${path.basename(cfg.xmlPath)}`
 			}
 		}
-	});
+	})
+		.then(() => null)
+		.catch(err => err);
+	if (policyError) {
+		t.skip('Could not install policy');
+		testServer.kill();
+		return false;
+	}
 
 	// Give us time to start browser and wait for it to request CRX file
 	const extensionRequested = testServer.waitFor(`/${path.basename(cfg.crxPath)}`);
