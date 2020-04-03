@@ -17,7 +17,7 @@ task:
           Xvfb $DISPLAY -screen 0 1024x768x24 -nolisten tcp -auth $XAUTHORITY
     - name: macos
       osx_instance:
-        image: mojave-base
+        image: catalina-base
       node_script:
         - brew install node@12
         - brew link --force node@12
