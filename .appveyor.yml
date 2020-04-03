@@ -18,7 +18,7 @@ before_test:
   #- set "PATH=C:\Program Files (x86)\Google\Chrome\Application;%PATH%"
   #- set "CHROME_BIN=chrome"
   - set "DEBUG=true"
-  - set "FILE_CHECK_DELAY=2000"
+  - set "FILE_CHECK_DELAY=2500"
 
 # Post-install test scripts.
 test_script:
