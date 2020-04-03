@@ -100,7 +100,7 @@ crx3(['example/example-extension/manifest.json'], {
 ;
 ```
 
-## Issues
+## Known Issues
 
 ### CRX_REQUIRED_PROOF_MISSING (Chrome and Chromium)
 
