@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**v1.1.3** - WIP
+
+- Fixed error handling when `manifest.json` is not found
+- Check Node.js version when run from CLI
+- Generated CRX files work in Opera browser too!
+
 **v1.1.2** - 2020-01-11
 
 - Support running without TTY while allowing to specify sources, instead of piping ZIP content
