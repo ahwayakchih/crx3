@@ -165,6 +165,7 @@ function compareWithExample (t, cfg) {
 		});
 }
 
+/* eslint-disable max-lines-per-function */
 async function doesItWorkInChrome (t, cfg) {
 	if (!setPolicy) {
 		t.skip(`Skipping testing in Chrome because setting up policies is not implemented for ${OS}.`);
@@ -273,6 +274,7 @@ async function doesItWorkInChrome (t, cfg) {
 
 	return Boolean(browser);
 }
+/* eslint-enable max-lines-per-function */
 
 // If we cannot test in Chrome/Chromium directly, we can try to compare output to `example-extension.crx`` which was tested.
 async function shouldItWorkInChrome (t, cfg, example) {

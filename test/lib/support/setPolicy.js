@@ -15,7 +15,7 @@ SET_POLICY.win32 = async function setPolicyWindows (policy) {
 	const fakeT = {
 		pass   : console.log,
 		comment: console.log,
-		error  : function (err) {
+		error (err) {
 			error = err;
 			console.error(err);
 		}

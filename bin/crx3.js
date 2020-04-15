@@ -7,13 +7,12 @@ const writeCRX3File = require('../');
 const config = require('../lib/configuration')().setFromArgv();
 const hasSrcPaths = config.srcPaths && config.srcPaths.length > 0;
 
-
+/* eslint-disable no-process-exit */
 if (!testVersion(process.version.substring(1), MINIMUM_REQUIRED_NODEJS_VERSION)) {
 	console.error(`CRX3 requires Node.js version ${MINIMUM_REQUIRED_NODEJS_VERSION} or higher.`);
 	process.exit(-1);
 }
 
-/* eslint-disable no-process-exit */
 if (process.stdin.isTTY && !hasSrcPaths) {
 	/* eslint-disable prefer-named-capture-group */
 	console.log(config
