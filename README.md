@@ -61,7 +61,7 @@ It will create "web-extension.pem" (if one does not exist yet), "web-extension.c
 **WARNING**: if you're using option without name/path, it must be specified before option with name/path. Otherwise, be sure that the list of directories and/or files to include in web extension file is specified after the special `--` marker, like this:
 
 ```sh
-crx3 -z some-other-name.zip -z -o -- web-extension
+crx3 -z some-other-name.zip -x -o -- web-extension
 ```
 
 If you already have a ZIP file containing web extension's files, you can use CRX3 like this:
