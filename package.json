@@ -12,7 +12,7 @@
     "node": ">=12"
   },
   "bin": {
-    "crx3": "./bin/crx3.js"
+    "crx3": "bin/crx3.js"
   },
   "dependencies": {
     "mri": "^1.1.6",
@@ -20,10 +20,10 @@
     "yazl": "^2.5.1"
   },
   "devDependencies": {
-    "c8": "^7.3.1",
+    "c8": "^7.3.4",
     "docdash": "^1.2.0",
-    "eslint": "^7.9.0",
-    "eslint-plugin-jsdoc": "^30.5.2",
+    "eslint": "^7.11.0",
+    "eslint-plugin-jsdoc": "^30.7.3",
     "jsdoc": "^3.6.6",
     "tap-diff": "^0.1.1",
     "tape": "^5.0.1",
