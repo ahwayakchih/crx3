@@ -20,10 +20,10 @@
     "yazl": "^2.5.1"
   },
   "devDependencies": {
-    "c8": "^7.3.4",
+    "c8": "^7.3.5",
     "docdash": "^1.2.0",
-    "eslint": "^7.11.0",
-    "eslint-plugin-jsdoc": "^30.7.3",
+    "eslint": "^7.12.1",
+    "eslint-plugin-jsdoc": "^30.7.7",
     "jsdoc": "^3.6.6",
     "tap-diff": "^0.1.1",
     "tape": "^5.0.1",
