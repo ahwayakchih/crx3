@@ -1,11 +1,12 @@
 Changelog
 =========
 
-**v1.1.3** - WIP
+**v1.1.3** - 2020-11-06
 
 - Fixed error handling when `manifest.json` is not found
 - Check Node.js version when run from CLI
 - Generated CRX files work in Opera browser too!
+- Fixed compatibility with Node.js v15+
 
 **v1.1.2** - 2020-01-11
 
