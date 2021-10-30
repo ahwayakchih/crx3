@@ -15,18 +15,18 @@
     "crx3": "bin/crx3.js"
   },
   "dependencies": {
-    "mri": "^1.1.6",
+    "mri": "^1.2.0",
     "pbf": "^3.2.1",
     "yazl": "^2.5.1"
   },
   "devDependencies": {
-    "c8": "^7.7.2",
+    "c8": "^7.10.0",
     "docdash": "^1.2.0",
-    "eslint": "^7.26.0",
-    "eslint-plugin-jsdoc": "^34.0.2",
-    "jsdoc": "^3.6.6",
+    "eslint": "^8.1.0",
+    "eslint-plugin-jsdoc": "^37.0.3",
+    "jsdoc": "^3.6.7",
     "tap-diff": "^0.1.1",
-    "tape": "^5.2.2",
+    "tape": "^5.3.1",
     "tape-catch": "^1.0.6"
   },
   "scripts": {

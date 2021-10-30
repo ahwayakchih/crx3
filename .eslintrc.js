@@ -304,7 +304,8 @@ module.exports = {
 
 		// JSDoc
 		'jsdoc/check-alignment': 1,
-		'jsdoc/check-examples': 1,
+		// TODO: enable once it's fixed for ESLint 8
+		//'jsdoc/check-examples': 1,
 		'jsdoc/check-indentation': 1,
 		'jsdoc/check-param-names': 1,
 		'jsdoc/check-syntax': 0,
