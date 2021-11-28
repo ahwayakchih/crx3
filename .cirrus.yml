@@ -31,7 +31,9 @@ task:
         - cat package.json
     populate_script: npm install
 
-  test_script: npm test
+  test_script:
+    - npm run puppeteer || true
+    - npm test
 
   on_failure:
     failed_artifacts:
