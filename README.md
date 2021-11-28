@@ -143,13 +143,13 @@ To run tests, clone module (see [API Documentation](#API-documentation)) and use
 npm test
 ```
 
-Tests include optional support for checking generated CRX file in Chromium browser when run on Linux system. To make it work:
+Tests include optional support for checking if CRX files built by the module will run in Chromium browser on a Linux system. To make it work:
 
-- make sure that Chrome or Chromium browser is installed,
+- make sure that Chrome or Chromium browser is already installed,
 - make sure that `CHROME_BIN` environment variable is set with path to the browser's executable,
-- if they were not available when installing CRX3 module, run `npm install` again (to install additional dependencies).
+- run `npm run puppeteer` to install additional dependencies.
 
-**WARNING:** Since there is no way to imitate installation process of a CRX file through puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a virtual machine, e.g., using [`qemu`](https://www.qemu.org/), or in a container, e.g., using [`podman`](https://podman.io/) or [`docker`](https://www.docker.com/).
+**WARNING:** Since there is no way to imitate installation process of a CRX file through the puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a virtual machine, e.g., using [`qemu`](https://www.qemu.org/), or in a container, e.g., using [`podman`](https://podman.io/) or [`docker`](https://www.docker.com/).
 
 Using `podman`:
 

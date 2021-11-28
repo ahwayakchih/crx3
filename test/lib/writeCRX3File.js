@@ -178,7 +178,7 @@ async function doesItWorkInChrome (t, cfg) {
 	}
 
 	if (!puppeteer) {
-		t.skip('Skipping testing in Chrome because no `puppeteer` or `puppeteer-core` module is available.');
+		t.skip('Skipping testing in Chrome because no `puppeteer` or `puppeteer-core` module is available. Use `npm run puppeteer` command to add it.');
 		return false;
 	}
 
@@ -258,8 +258,6 @@ async function doesItWorkInChrome (t, cfg) {
 		.then(() => browser.newPage());
 
 	await page.goto('http://127.0.0.1:8080/')
-		// Chromium seems to request for XML file AGAIN and only after that extension seems to work OK
-		.then(() => testServer.waitFor(`/${path.basename(cfg.xmlPath)}`))
 		// There's some additional delay (for XML parsing?) needed
 		.then(() => new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)))
 		// Reload page or it won't work

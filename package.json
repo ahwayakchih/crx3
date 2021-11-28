@@ -30,13 +30,13 @@
     "tape-catch": "^1.0.6"
   },
   "scripts": {
-    "prepare": "test \"${CHROME_BIN}\" && npm install --no-save puppeteer-core serve-files || echo 'Puppeteer testing disabled'",
+    "puppeteer": "node ./puppeteer-core.js",
     "test": "node ./test/index.js | tap-diff",
     "prepublishOnly": "npm run -s test && npm run -s checkStyle",
     "proto": "curl https://raw.githubusercontent.com/chromium/chromium/master/components/crx_file/crx3.proto > lib/crx3.proto",
     "postproto": "echo '/* eslint-disable */' > lib/crx3.pb.js && pbf lib/crx3.proto --no-read >> lib/crx3.pb.js",
     "precheckStyle": "rm -f ./reports/eslint.txt",
-    "checkStyle": "eslint index.js lib/*.js test/** bin/*  > ./reports/eslint.txt || echo 'ESLint results saved to `reports/eslint.txt`' && cat ./reports/eslint.txt",
+    "checkStyle": "eslint index.js puppeteer-core.js lib/*.js test/** bin/*  > ./reports/eslint.txt || echo 'ESLint results saved to `reports/eslint.txt`' && cat ./reports/eslint.txt",
     "precheckCoverage": "rm -rf ./reports/coverage",
     "checkCoverage": "c8 --clean --report --reporter text --reporter html --reports-dir reports/coverage node ./test/index.js",
     "postcheckCoverage": "echo Coverage results saved to '`reports/coverage/index.html`'",
