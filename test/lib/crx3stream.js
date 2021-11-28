@@ -3,8 +3,13 @@ const path = require('path');
 const exec = require('child_process').exec;
 const test = require('tape-catch');
 const crx3stream = require('../../lib/crx3stream');
+const tryExec = require('./support/tryExec');
 
 const CWD = process.cwd();
+
+const DEFAULT_FILE_CHECK_DELAY = 1500;
+
+const FILE_CHECK_DELAY = parseInt(process.env.FILE_CHECK_DELAY || 0, 10) || DEFAULT_FILE_CHECK_DELAY;
 
 test('crx3stream', t => {
 	t.strictEqual(typeof crx3stream, 'function', 'Should export a function');
@@ -80,14 +85,18 @@ function compareWithExample (t, crxStream) {
 
 	crxStream.on('close', () => {
 		const examplePath = path.join(CWD, 'example', 'example-extension.crx');
-		exec(`diff "${options.crxPath}" "${examplePath}"`, err => {
-			t.ok(!err, `Created "${options.crxPath}" should not differ from "${examplePath}"`);
-
-			fs.unlink(options.crxPath, err2 => {
-				t.end(err || err2 || null);
-			});
-		});
+		diffCRXFiles(options.crxPath, examplePath, t, `Created "${options.crxPath}" should not differ from "${examplePath}"`)
+			.then(() => fs.unlink(options.crxPath, err => t.end(err || null)))
+			.catch(err => t.end(err));
 	});
 
 	zip.pipe(crxStream);
+}
+
+async function diffCRXFiles(crxPath, expectedPath, t, msg) {
+	if (FILE_CHECK_DELAY) {
+		await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)); // eslint-disable-line no-magic-numbers
+	}
+
+	return tryExec(t, `diff "${crxPath}" "${expectedPath}"`, `Created "${crxPath}" should match "${expectedPath}"`);
 }
