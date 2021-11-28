@@ -4,6 +4,7 @@ Changelog
 **v1.1.4** - WIP
 
 - Updated development dependencies
+- Fixed test runs on Cirrus CI
 
 **v1.1.3** - 2020-11-06
 
