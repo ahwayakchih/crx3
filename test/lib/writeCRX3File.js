@@ -2,6 +2,7 @@ const fs = require('fs');
 const OS = require('os').platform();
 const path = require('path');
 const test = require('tape-catch');
+const testVersion = require('../../lib/testVersion');
 const writeCRX3File = require('../../lib/writeCRX3File');
 
 const include = require('./support/include');
@@ -257,7 +258,14 @@ async function doesItWorkInChrome (t, cfg) {
 		.then(status => t.strictEqual(status, HTTP_OK, 'TestServer response to extension request should be 200 OK'))
 		.then(() => browser.newPage());
 
+	const browserVersion = await browser.version();
+	const extensionXMLRequested = testVersion(browserVersion.replace(/^[\w\W]*\//, ''), '93.0.4577.0')
+		? Promise.resolve()
+		// Older Chromium seems to request for XML file AGAIN and only after that extension seems to work OK
+		: testServer.waitFor(`/${path.basename(cfg.xmlPath)}`, FILE_CHECK_DELAY).catch(() => true);
+
 	await page.goto('http://127.0.0.1:8080/')
+		.then(() => extensionXMLRequested)
 		// There's some additional delay (for XML parsing?) needed
 		.then(() => new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)))
 		// Reload page or it won't work
