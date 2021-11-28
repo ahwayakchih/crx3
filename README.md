@@ -70,7 +70,7 @@ If you already have a ZIP file containing web extension's files, you can use CRX
 cat web-extension.zip | crx3 -p web-extension.pem
 ```
 
-It will read existing ZIP file contents and create "web-extension.crx" and "web-extension.pem" files.
+It will convert existing ZIP file into a "web-extension.crx" file and create a "web-extension.pem" file.
 Make sure that ZIP file content has no parent directory, e.g., "manifest.json" file has to be there, not "web-extension/manifest.json".
 Otherwise new CRX file will not work in a browser.
 
