@@ -1,6 +1,10 @@
 Changelog
 =========
 
+**v1.1.4** - WIP
+
+- Updated development dependencies
+
 **v1.1.3** - 2020-11-06
 
 - Fixed error handling when `manifest.json` is not found
