@@ -259,6 +259,8 @@ async function doesItWorkInChrome (t, cfg) {
 		.then(() => browser.newPage());
 
 	const browserVersion = await browser.version();
+	// This helps diagnose problem if there's a timeout later, before final check.
+	// It also seems to add enough delay to avoid timeout on CirrusCI ;D.
 	t.ok(browserVersion, `Browser version: "${browserVersion}"`);
 
 	const extensionXMLRequested = testVersion(browserVersion.replace(/^[\w\W]*\//, ''), '93.0.4577.0')
