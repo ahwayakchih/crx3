@@ -1,6 +1,8 @@
 # Test against the latest version of this Node.js version
 environment:
-  nodejs_version: "12"
+  matrix:
+    - nodejs_version: "12"
+    - nodejs_version: "18"
 
 # Cache node_modules between builds
 cache:
