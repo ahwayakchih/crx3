@@ -14,7 +14,7 @@ task:
         # https://salsa.debian.org/xorg-team/xserver/xorg-server/blob/debian-unstable/debian/local/xvfb-run
         - mkdir -p $(dirname $XAUTHORITY);
           touch "$XAUTHORITY";
-          Xvfb $DISPLAY -screen 0 1024x768x24 -nolisten tcp -auth $XAUTHORITY
+          Xvfb $DISPLAY -screen 0 1024x768x24 -nolisten tcp -nolisten unix -auth $XAUTHORITY
     - name: macos
       macos_instance:
         image: ghcr.io/cirruslabs/macos-ventura-base:latest
