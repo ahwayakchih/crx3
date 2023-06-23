@@ -16,8 +16,8 @@ task:
           touch "$XAUTHORITY";
           Xvfb $DISPLAY -screen 0 1024x768x24 -nolisten tcp -auth $XAUTHORITY
     - name: macos
-      osx_instance:
-        image: monterey-base
+      macos_instance:
+        image: ghcr.io/cirruslabs/macos-ventura-base:latest
       env:
         FILE_CHECK_DELAY: 2500
       node_script:
