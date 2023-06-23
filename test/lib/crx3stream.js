@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const exec = require('child_process').exec;
 const test = require('tape-catch');
 const crx3stream = require('../../lib/crx3stream');
 const tryExec = require('./support/tryExec');
@@ -85,7 +84,7 @@ function compareWithExample (t, crxStream) {
 
 	crxStream.on('close', () => {
 		const examplePath = path.join(CWD, 'example', 'example-extension.crx');
-		diffCRXFiles(options.crxPath, examplePath, t, `Created "${options.crxPath}" should not differ from "${examplePath}"`)
+		diffCRXFiles(options.crxPath, examplePath, t)
 			.then(() => fs.unlink(options.crxPath, err => t.end(err || null)))
 			.catch(err => t.end(err));
 	});
@@ -93,9 +92,9 @@ function compareWithExample (t, crxStream) {
 	zip.pipe(crxStream);
 }
 
-async function diffCRXFiles(crxPath, expectedPath, t, msg) {
+async function diffCRXFiles (crxPath, expectedPath, t) {
 	if (FILE_CHECK_DELAY) {
-		await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)); // eslint-disable-line no-magic-numbers
+		await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY));
 	}
 
 	return tryExec(t, `diff "${crxPath}" "${expectedPath}"`, `Created "${crxPath}" should match "${expectedPath}"`);
