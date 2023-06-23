@@ -22,7 +22,7 @@ task:
         FILE_CHECK_DELAY: 2500
       node_script:
         - brew install node@18
-        - brew link --force node@18
+        - brew link --overwrite node@18
 
   node_modules_cache:
     folder: node_modules
