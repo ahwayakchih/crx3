@@ -259,6 +259,8 @@ async function doesItWorkInChrome (t, cfg) {
 		.then(() => browser.newPage());
 
 	const browserVersion = await browser.version();
+	t.ok(browserVersion, `Browser version: "${browserVersion}"`);
+
 	const extensionXMLRequested = testVersion(browserVersion.replace(/^[\w\W]*\//, ''), '93.0.4577.0')
 		? Promise.resolve()
 		// Older Chromium seems to request for XML file AGAIN and only after that extension seems to work OK
@@ -273,7 +275,7 @@ async function doesItWorkInChrome (t, cfg) {
 		// Finally! Test if extension was initialized and worked
 		.then(() => page.waitForSelector('body[data-id]', {timeout: FILE_CHECK_DELAY})) // eslint-disable-line no-magic-numbers
 		.then(() => page.evaluate(() => document.body.getAttribute('data-id'))) // eslint-disable-line no-undef
-		.then(foundId => t.strictEqual(foundId, appId, `Extension "${cfg.crxPath}" should work in Chrome/Chromium`))
+		.then(foundId => t.strictEqual(foundId, appId, `Extension "${cfg.crxPath}" should work in ${browserVersion} browser`))
 		// Cleanup
 		.catch(t.fail)
 		.finally(() => browser.close().catch(console.error) && testServer.kill());
