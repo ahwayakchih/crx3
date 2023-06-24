@@ -1,4 +1,6 @@
 task:
+  only_if: $CIRRUS_BRANCH == 'master'
+
   matrix:
     - name: linux
       container:
