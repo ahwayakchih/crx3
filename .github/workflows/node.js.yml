@@ -41,6 +41,6 @@ jobs:
       with:
         name: failed-test
         path: |
-          ${{ github.workspace }}/test*.zip
-          ${{ github.workspace }}/test*.crx
-          ${{ github.workspace }}/test*.xml
+          *.zip
+          *.crx
+          *.xml
