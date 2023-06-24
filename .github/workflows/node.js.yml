@@ -39,7 +39,7 @@ jobs:
       uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: failed-test
+        name: failed-test-on-${{ matrix.os }}-with-${{ matrix.node-version }}
         path: |
           test*.zip
           test*.crx
