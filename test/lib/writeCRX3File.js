@@ -288,7 +288,7 @@ async function doesItWorkInChrome (t, cfg) {
 }
 /* eslint-enable max-lines-per-function */
 
-// If we cannot test in Chrome/Chromium directly, we can try to compare output to `example-extension.crx`` which was tested.
+// If we cannot test in Chrome/Chromium directly, we can try to compare output to `example-extension.crx` which was tested.
 async function shouldItWorkInChrome (t, cfg, example) {
 	const {
 		crxPath,
