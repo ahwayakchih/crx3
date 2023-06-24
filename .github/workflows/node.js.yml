@@ -34,3 +34,13 @@ jobs:
       run: npm test
       env:
         FILE_CHECK_DELAY: 2500
+
+    - name: Upload artifacts in case of failure
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: failed-test
+        path: |
+          test*.zip
+          test*.crx
+          test*.xml
