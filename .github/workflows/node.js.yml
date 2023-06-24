@@ -40,7 +40,4 @@ jobs:
       if: failure()
       with:
         name: failed-test
-        path: |
-          *.zip
-          *.crx
-          *.xml
+        path: *.zip
