@@ -15,14 +15,14 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         node-version: [16.x, 18.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        test_command: npm test
+        test_command: "npm test"
         include:
           # Test with pupeteer on Linux only, and only latest Node.js.
           # We just need to check if it works at all. If something fails, then we can check manually what's happening.
           - os: ubuntu-latest
             node-version: 18.x
             test_with_puppeteer: true
-            test_command: xvfb-run --auto-servernum npm test
+            test_command: "xvfb-run --auto-servernum npm test"
 
     runs-on: ${{ matrix.os }}
 
