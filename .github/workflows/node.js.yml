@@ -19,10 +19,13 @@ jobs:
           - test_command: "npm test"
           # Test with pupeteer on Linux only, and only latest Node.js.
           # We just need to check if it works at all. If something fails, then we can check manually what's happening.
+          # Also set policies directory, as Ubuntu uses non-default one (see: https://www.chromium.org/administrators/linux-quick-start/)
           - os: ubuntu-latest
             node-version: 18.x
             test_with_puppeteer: true
             test_command: "xvfb-run --auto-servernum npm test"
+            CHROMIUM_POLICIES: "/etc/chromium-browser/policies"
+
 
     runs-on: ${{ matrix.os }}
 
@@ -46,12 +49,18 @@ jobs:
 
     - name: Optional Puppeteer setup
       if: ${{ matrix.test_with_puppeteer }}
-      run: sudo apt-get install xvfb chromium-browser && npm run puppeteer
+      run: |
+        sudo apt-get install xvfb chromium-browser
+        sudo mkdir -p ${{ matrix.CHROMIUM_POLICIES }}/managed
+        sudo mkdir -p ${{ matrix.CHROMIUM_POLICIES }}/recommended
+        sudo chmod -R 777 ${{ matrix.CHROMIUM_POLICIES }}
+        npm run puppeteer
 
     - name: Run tests
       run: ${{ matrix.test_command }}
       env:
         FILE_CHECK_DELAY: 2500
+        CHROMIUM_POLICIES: ${{ matrix.CHROMIUM_POLICIES }}
 
     - name: Upload artifacts in case of failure
       uses: actions/upload-artifact@v3

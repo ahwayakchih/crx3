@@ -9,6 +9,7 @@ task:
       env:
         DISPLAY: ":99"
         XAUTHORITY: /tmp/crx3.puppeteer/Xauthority
+        CHROMIUM_POLICIES: /etc/chromium/policies
       xvfb_start_background_script:
         # Based on Xauthority stuff from xvfb-run:
         # https://salsa.debian.org/xorg-team/xserver/xorg-server/blob/debian-unstable/debian/local/xvfb-run
