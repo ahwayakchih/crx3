@@ -136,6 +136,7 @@ function compareWithExample (t, cfg) {
 	const xmlTest = fs.readFileSync(cfg.xmlPath, {encoding: 'utf8'});
 	const xmlExampleTest = fs.readFileSync(example.xml, {encoding: 'utf8'})
 		.replace(path.basename(example.crx), path.basename(cfg.crxPath));
+	const xmlMatches = (xmlTest === xmlExampleTest);
 	t.strictEqual(xmlTest, xmlExampleTest, `Created "${cfg.xmlPath}" should match "${example.xml}"`);
 
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
@@ -149,7 +150,8 @@ function compareWithExample (t, cfg) {
 	const zipTest = tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`)
 		.replace(cfg.zipPath, '')
 		.replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
-	t.strictEqual(zipExample, zipTest, `Created "${cfg.zipPath}" should match "${example.zip}"`);
+	const zipMatches = (zipTest === zipExample);
+	t.strictEqual(zipTest, zipExample, `Created "${cfg.zipPath}" should match "${example.zip}"`);
 
 	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
 	t.ok(fs.existsSync(cfg.crxPath), `"${cfg.crxPath}" file should exist`);
@@ -158,7 +160,7 @@ function compareWithExample (t, cfg) {
 	return doesItWorkInChrome(t, cfg)
 		.then(worked => worked || shouldItWorkInChrome(t, cfg, example))
 		.then(worked => {
-			if (worked) {
+			if (worked && xmlMatches && zipMatches) {
 				fs.unlinkSync(cfg.xmlPath);
 				fs.unlinkSync(cfg.crxPath);
 				fs.unlinkSync(cfg.zipPath);
