@@ -19,6 +19,8 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+    - name: Workaround Windows mess and set git to keep original line endings
+      run: git config --global core.autocrlf false
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
