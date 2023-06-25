@@ -12,7 +12,7 @@ task:
         DISPLAY: ":99"
         XAUTHORITY: /tmp/crx3.puppeteer/Xauthority
         CHROME_POLICIES: /etc/chromium/policies
-        FILE_CHECK_DELAY: 2000
+        FILE_CHECK_DELAY: 2500
       xvfb_start_background_script:
         # Based on Xauthority stuff from xvfb-run:
         # https://salsa.debian.org/xorg-team/xserver/xorg-server/blob/debian-unstable/debian/local/xvfb-run
