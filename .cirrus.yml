@@ -11,7 +11,7 @@ task:
       env:
         DISPLAY: ":99"
         XAUTHORITY: /tmp/crx3.puppeteer/Xauthority
-        CHROMIUM_POLICIES: /etc/chromium/policies
+        CHROME_POLICIES: /etc/chromium/policies
         FILE_CHECK_DELAY: 2000
       xvfb_start_background_script:
         # Based on Xauthority stuff from xvfb-run:

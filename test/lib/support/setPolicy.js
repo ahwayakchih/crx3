@@ -7,9 +7,13 @@ const tryExec = require('./tryExec');
 const SET_POLICY = {};
 
 SET_POLICY.linux = async function setPolicyLinux (policy) {
-	// Allow to override default policies path through `CHROMIUM_POLICIES` set in environment
-	const policies_dir = process.env.CHROMIUM_POLICIES || "/etc/chromium/policies"
-	return fs.promises.writeFile(`${policies_dir}/managed/crx3-example-extension-test.json`, JSON.stringify(policy));
+	/**
+	 * Allow to override default policies path through `CHROME_POLICIES` set in environment.
+	 * Chromium on Linux uses /etc/chromium/policies or /etc/chromium-browser/policies (on Ubuntu?).
+	 * Chrome on Linux uses /etc/opt/chrome/policies.
+	 */
+	const policiesDirectory = process.env.CHROME_POLICIES || '/etc/chromium/policies';
+	return fs.promises.writeFile(`${policiesDirectory}/managed/crx3-example-extension-test.json`, JSON.stringify(policy));
 };
 
 SET_POLICY.win32 = async function setPolicyWindows (policy) {

@@ -136,7 +136,7 @@ function compareWithExample (t, cfg) {
 	const xmlTest = fs.readFileSync(cfg.xmlPath, {encoding: 'utf8'});
 	const xmlExampleTest = fs.readFileSync(example.xml, {encoding: 'utf8'})
 		.replace(path.basename(example.crx), path.basename(cfg.crxPath));
-	const xmlMatches = (xmlTest === xmlExampleTest);
+	const xmlMatches = xmlTest === xmlExampleTest;
 	t.strictEqual(xmlTest, xmlExampleTest, `Created "${cfg.xmlPath}" should match "${example.xml}"`);
 
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
@@ -150,7 +150,7 @@ function compareWithExample (t, cfg) {
 	const zipTest = tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`)
 		.replace(cfg.zipPath, '')
 		.replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
-	const zipMatches = (zipTest === zipExample);
+	const zipMatches = zipTest === zipExample;
 	t.strictEqual(zipTest, zipExample, `Created "${cfg.zipPath}" should match "${example.zip}"`);
 
 	t.ok(cfg.crxPath, 'Promised result should have `crxPath` set');
@@ -184,6 +184,10 @@ async function doesItWorkInChrome (t, cfg) {
 		t.skip('Skipping testing in Chrome because no `puppeteer` or `puppeteer-core` module is available. Use `npm run puppeteer` command to add it.');
 		return false;
 	}
+
+	const chromeVersion = process.env.CHROME_BIN
+		? tryExec(t, `${process.env.CHROME_BIN} --product-version`, `${process.env.CHROME_BIN} should be executable and support '--product-version'`)
+		: null;
 
 	const testServer = await getServer(PORT, cfg);
 	if (!testServer) {
@@ -223,16 +227,23 @@ async function doesItWorkInChrome (t, cfg) {
 	// Give us time to start browser and wait for it to request CRX file
 	const extensionRequested = testServer.waitFor(`/${path.basename(cfg.crxPath)}`);
 
-	/* eslint-disable array-element-newline, multiline-comment-style */
-	const browser = await puppeteer.launch({
-		headless         : false,
-		executablePath   : process.env.CHROME_BIN || null,
-		ignoreDefaultArgs: [
-			'--headless', // Do not run in headless mode because it disables support for extensions
-			'--disable-extensions', // Do not disable extensions when we want to test them ;P
-			'--disable-background-networking' // Do not prevent browser from force_installing our stuff
-		],
-		args: [
+	const margin = ' '.padStart(t._objectPrintDepth || 0, '.'); // eslint-disable-line no-underscore-dangle
+
+	// Since v112, Chrome/Chromium has "new" headless mode, which supports extensions and does not need XVFB
+	/* eslint-disable array-element-newline, array-bracket-newline, multiline-comment-style */
+	const runFullModeMode = !testVersion(chromeVersion, '112.0.5614.0');
+	const browserIgnoreDefaultArgs = [
+		'--disable-extensions', // Do not disable extensions when we want to test them ;P
+		'--disable-background-networking' // Do not prevent browser from force_installing our stuff
+	];
+	let browserArgs = [
+		'--headless=new' // Use "new" headless mode
+	];
+	if (runFullModeMode) {
+		t.comment(`${margin}Running full browser, XVFB is required`);
+		// Make sure we do not run in "old" headless mode because it disables support for extensions
+		browserIgnoreDefaultArgs.unshift('--headless');
+		browserArgs = [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
 			'--disable-gpu',
@@ -245,9 +256,19 @@ async function doesItWorkInChrome (t, cfg) {
 			// `--load-extension=${cfg.crxPath}`, // This is for loading extension from sources, not from CRX file :/
 			// '--system-developer-mode', // Run in developer mode
 			// `--whitelisted-extension-id ${appId}`, // Adds the given extension ID to all the permission whitelists
-		]
+		];
+	}
+	else {
+		t.comment(`${margin}Running browser using "new" headless mode, XVFB is not needed`);
+	}
+	/* eslint-enable array-element-newline, array-bracket-newline, multiline-comment-style */
+
+	const browser = await puppeteer.launch({
+		headless         : false, // This has to be false, even when we're passing `headless=new` arg
+		executablePath   : process.env.CHROME_BIN || null,
+		ignoreDefaultArgs: browserIgnoreDefaultArgs,
+		args             : browserArgs
 	}).catch(console.error);
-	/* eslint-enable array-element-newline, multiline-comment-style */
 
 	if (!browser) {
 		t.fail('Could not open browser to test extension in it');
@@ -261,9 +282,8 @@ async function doesItWorkInChrome (t, cfg) {
 		.then(() => browser.newPage());
 
 	const browserVersion = await browser.version();
-	// This helps diagnose problem if there's a timeout later, before final check.
-	// It also seems to add enough delay to avoid timeout on CirrusCI ;D.
-	t.ok(browserVersion, `Browser version: "${browserVersion}"`);
+	// This helps diagnose problem if there's a timeout later, before final check
+	t.ok(browserVersion, `Browser version: "${browserVersion}"`); // It also seems to add enough delay to avoid timeout on CirrusCI ;D
 
 	const extensionXMLRequested = testVersion(browserVersion.replace(/^[\w\W]*\//, ''), '93.0.4577.0')
 		? Promise.resolve()
