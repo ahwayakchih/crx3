@@ -147,9 +147,14 @@ Tests include optional support for checking if CRX files built by the module wil
 
 - make sure that Chrome or Chromium browser is already installed,
 - make sure that `CHROME_BIN` environment variable is set with path to the browser's executable,
+- make sure that `CHROME_POLICIES` environment variable points to exisitng directory tree used by the browser to read policies,
+- optionally set `DEBUG` environment variable to `true`, to get additional output from test server,
+- optionally set `FILE_CHECK_DELAY` environment variable to number of milliseconds to wait for between various checks (defaults to 1500),
 - run `npm run puppeteer` to install additional dependencies.
 
-**WARNING:** Since there is no way to imitate installation process of a CRX file through the puppeteer (or is there?), test will try to create an `/etc/chromium/policies/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a virtual machine, e.g., using [`qemu`](https://www.qemu.org/), or in a container, e.g., using [`podman`](https://podman.io/) or [`docker`](https://www.docker.com/).
+`/etc/chromium/policies` is used by default if no `CHROME_POLICIES` is specified. Which will NOT work if Google's Chrome is used, as explained in Chromium's [Linux Quick Start](https://www.chromium.org/administrators/linux-quick-start/).
+
+**WARNING:** Since there is no way to imitate installation process of a CRX file through the puppeteer (or is there?), test will try to create an `${CHROME_POLICIES}/managed/crx3-example-extension-test.json` policy file to "force install" it. That is why it is best to run whole thing in a virtual machine, e.g., using [`qemu`](https://www.qemu.org/), or in a container, e.g., using [`podman`](https://podman.io/) or [`docker`](https://www.docker.com/).
 
 Using `podman`:
 
