@@ -5,6 +5,7 @@ Changelog
 
 - Updated development dependencies
 - Fixed test runs on Cirrus CI
+- Improved error output when private key cannot be loaded
 
 **v1.1.3** - 2020-11-06
 
