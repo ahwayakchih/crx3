@@ -297,7 +297,7 @@ async function doesItWorkInChrome (t, cfg) {
 		// Reload page or it won't work
 		.then(() => page.reload())
 		// Finally! Test if extension was initialized and worked
-		.then(() => page.waitForSelector('body[data-id]', {timeout: FILE_CHECK_DELAY})) // eslint-disable-line no-magic-numbers
+		.then(() => page.waitForSelector('body[data-id]', {timeout: FILE_CHECK_DELAY}))
 		.then(() => page.evaluate(() => document.body.getAttribute('data-id'))) // eslint-disable-line no-undef
 		.then(foundId => t.strictEqual(foundId, appId, `Extension "${cfg.crxPath}" should work in ${browserVersion} browser`))
 		// Cleanup
@@ -321,7 +321,7 @@ async function shouldItWorkInChrome (t, cfg, example) {
 	await writeCRX3File(zip, {crxPath, keyPath});
 
 	if (FILE_CHECK_DELAY) {
-		await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)); // eslint-disable-line no-magic-numbers
+		await new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY));
 	}
 
 	return tryExec(t, `diff "${crxPath}" "${example.crx}"`, `Created "${crxPath}" should match "${example.crx}"`);

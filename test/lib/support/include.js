@@ -9,7 +9,7 @@ module.exports = function include (name) {
 	try {
 		result = require(name); // eslint-disable-line global-require
 	}
-	catch (err) {
+	catch (err) { // eslint-disable-line no-unused-vars
 		// Ignore error.
 		result = null;
 	}
