@@ -1,11 +1,13 @@
 Changelog
 =========
 
-**v1.1.4** - WIP
+**v2.0.0** - WIP
 
-- Updated development dependencies
-- Fixed test runs on Cirrus CI
+- Updated dependencies
+- Bumped minimum Node.js version to 22, not required but older versions are unsupported anyway
 - Improved error output when private key cannot be loaded
+- Updated example ZIP and CRX binaries because tests failed on differences in compression ratio (of exactly the same sources!)
+- Dropped use of runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS)
 
 **v1.1.3** - 2020-11-06
 
