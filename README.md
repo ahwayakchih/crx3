@@ -7,9 +7,9 @@ It creates CRXv3 files, which work for Chrome versions 64.0.3242 and above.
 
 If you need to create web extension file for older browser versions, where CRXv3 is not supported, use [CRX module](https://github.com/oncletom/crx) instead.
 
-It requires Node.js version 12 (or above) and runs on Linux, MacOS and Windows.
+It requires Node.js version 22 (or above) and runs on Linux, MacOS and Windows.
 
-> [![Build status on Linux & MacOS](https://api.cirrus-ci.com/github/ahwayakchih/crx3.svg?branch=master)](https://cirrus-ci.com/github/ahwayakchih/crx3/master "Linux & MacOS build logs") [![Build status on Windows](https://ci.appveyor.com/api/projects/status/oylw6nx8ebj5rw1e/branch/master?svg=true)](https://ci.appveyor.com/project/ahwayakchih/crx3/branch/master "Windows build log") [![Build status on Linux, MacOS and Windows](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml "Linux, MacOS and Windows build logs")
+[![Build status on Linux, MacOS and Windows](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml "Linux, MacOS and Windows build logs")
 
 # Installation
 
