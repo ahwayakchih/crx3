@@ -1,5 +1,8 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# This workflow will do a clean installation of node.js dependencies, cache/restore them,
+# build the source code and run tests across different versions of node.js.
+#
+# For more information see:
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: test
 
@@ -22,10 +25,10 @@ jobs:
       - name: Workaround Windows mess and set git to keep original line endings
         run: git config --global core.autocrlf false
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -42,7 +45,7 @@ jobs:
           FILE_CHECK_DELAY: 1500
 
       - name: Upload artifacts in case of failure
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: failed-test-on-${{ matrix.os }}-with-${{ matrix.node-version }}
@@ -57,13 +60,13 @@ jobs:
     env:
       CHROME_POLICIES: /etc/opt/chrome/policies
       FILE_CHECK_DELAY: 2000
-      # Enable debug to show output from test server that listens serves extension to browser
+      # Enable debug to show output from test server that serves extension to browser
       # DEBUG: true
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 22.x
           cache: 'npm'
@@ -90,7 +93,7 @@ jobs:
         run: npm test
 
       - name: Upload artifacts in case of failure
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: failed-test-on-ubuntu-with-puppeteer
