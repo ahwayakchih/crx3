@@ -8,6 +8,7 @@ Changelog
 - Improved error output when private key cannot be loaded
 - Updated example ZIP and CRX binaries because tests failed on differences in compression ratio (of exactly the same sources!)
 - Dropped use of runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS)
+- Added puppeteer.containerfile and usage info
 
 **v1.1.3** - 2020-11-06
 
