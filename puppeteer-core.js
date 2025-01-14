@@ -4,7 +4,18 @@ const testVersion = require('./lib/testVersion');
 const include = require('./test/lib/support/include');
 
 const chromeToPupeteer = [
+	/*
+	 * This list is updated only when updating module, so very sporadically.
+	 * For complete list, see:
+	 * https://pptr.dev/supported-browsers#supported-browser-version-list
+	 */
 	// Chromium version, Last compatible puppeteer version
+	['131.0.6778.264', '24.0.0'],
+	['131.0.6778.204', '23.11.1'],
+	['127.0.6533.88', '22.15.0'],
+	['121.0.6167.85', '21.9.0'],
+	['115.0.5790.102', '21.0.0'],
+	['115.0.5790.98', '20.9.0'],
 	['114.0.5735.133', '20.7.2'],
 	['112.0.5614.0', '19.8.0'],
 	['111.0.5556.0', '19.7.0'],

@@ -231,13 +231,15 @@ async function doesItWorkInChrome (t, cfg) {
 
 	// Since v112, Chrome/Chromium has "new" headless mode, which supports extensions and does not need XVFB
 	/* eslint-disable array-element-newline, array-bracket-newline, multiline-comment-style */
-	const runFullModeMode = !testVersion(chromeVersion, '112.0.5614.0');
+	const runFullModeMode = !testVersion(chromeVersion.trim(), '112.0.5614.0');
 	const browserIgnoreDefaultArgs = [
 		'--disable-extensions', // Do not disable extensions when we want to test them ;P
 		'--disable-background-networking' // Do not prevent browser from force_installing our stuff
 	];
 	let browserArgs = [
-		'--headless=new' // Use "new" headless mode
+		'--headless=new', // Use "new" headless mode
+		// Without this, puppeteer (or Chromium?) in Alpine container hangs and `newPage()` is never resolved nor failed.
+		'--disable-gpu'
 	];
 	if (runFullModeMode) {
 		t.comment(`${margin}Running full browser, XVFB is required`);
