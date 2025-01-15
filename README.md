@@ -113,12 +113,22 @@ So, there's a chance i got it wrong, in which case do not be afraid to create a 
 
 Unless extension is being installed through the `chrome://extensions/` page, with "developer mode" enabled beforehand (it has to be enabled and then Chrome has to be restarted), there's a big chance that users will see `CRX_REQUIRED_PROOF_MISSING` error when they try to install `.crx` file created with CRX3 module.
 
-If extension is installed manually, on MacOS or Linux, it can be installed as long as:
+For more information about changes required for hosting custom CRX extensions, see:
+https://developer.chrome.com/docs/extensions/mv2/hosting-changes?hl=en#deployment
+
+### Installing extension from CRX
+
+On MacOS and Windows, Chrome does not allow to install extensions from local files any more (except through policies).
+
+For more information about manually installing custom extensions, see:
+https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions
+
+On MacOS or Linux, extension can be installed through a preferences file (https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#preferences), as long as:
 
 - it's `update_url` value in `manifest.json` file is correct (see https://developer.chrome.com/extensions/linux_hosting#update_url),
-- it's from server with correct setup (see https://developer.chrome.com/extensions/linux_hosting#hosting).
+- it's from server with correct setup (see https://developer.chrome.com/docs/extensions/how-to/distribute/host-on-linux#hosting).
 
-On Windows, they have to be installed in "developer mode", or through enterprise policy (see https://developer.chrome.com/extensions/hosting_changes).
+On Windows, they can be installed via [Windows registry](https://developer.chrome.com/extensions/external_extensions#registry).
 
 On all systems, extensions can be installed through a policy setup:
 
@@ -158,7 +168,7 @@ Tests include optional support for checking if CRX files built by the module wil
 
 There is an official puppeteer docker image, but it's ~2 GB, which is unnecessarily huge. Using `podman` or `docker`, you can build image that's less than half of that size and is more than enough for testing if generated CRX3 works in a Chromium browser.
 
-### Testing with rootless `podman`
+### Testing with [rootless `podman`](https://github.com/containers/podman/blob/main/README.md#rootless)
 
 First step is to prepare container image. This step is needed only once.
 
