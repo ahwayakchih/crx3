@@ -123,12 +123,12 @@ On MacOS and Windows, Chrome does not allow to install extensions from local fil
 For more information about manually installing custom extensions, see:
 https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions
 
-On MacOS or Linux, extension can be installed through a preferences file (https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#preferences), as long as:
+On MacOS or Linux, extension can be installed through a [preferences file](https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#preferences), as long as:
 
-- it's `update_url` value in `manifest.json` file is correct (see https://developer.chrome.com/extensions/linux_hosting#update_url),
-- it's from server with correct setup (see https://developer.chrome.com/docs/extensions/how-to/distribute/host-on-linux#hosting).
+- it's [`update_url`](https://developer.chrome.com/docs/extensions/how-to/distribute/host-on-linux#update_url) value in `manifest.json` file is correct,
+- it's from server with [correct setup](https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#registry).
 
-On Windows, they can be installed via [Windows registry](https://developer.chrome.com/extensions/external_extensions#registry).
+On Windows, they can be installed via [Windows registry](https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#registry).
 
 On all systems, extensions can be installed through a policy setup:
 
