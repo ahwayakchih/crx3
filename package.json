@@ -58,6 +58,7 @@
   "files": [
     "bin/**",
     "lib/**",
-    "index.js"
+    "index.js",
+    "README.md"
   ]
 }
