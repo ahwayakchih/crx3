@@ -90,25 +90,13 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 	};
 
 	const manifestPath = path.join(CWD, 'example', 'example-extension', 'manifest.json');
-	const utime = 1553470140; // '2019-03-24T23:29:00.000Z'
-	try {
-		fs.utimesSync(manifestPath, utime, utime);
-		fs.utimesSync(path.join(path.dirname(manifestPath), 'example.js'), utime, utime);
-		fs.utimesSync(path.dirname(manifestPath), utime, utime);
-	}
-	catch (err) {
-		t.comment('Should be able to change atime and mtime of example paths, to create matchable files');
-		t.fail(err);
-		t.end();
-		return;
-	}
-
 	const p = writeCRX3File([manifestPath], {
-		crxPath: temp.crx,
-		zipPath: temp.zip,
-		xmlPath: temp.xml,
-		keyPath: path.join(CWD, 'example', 'example-extension.pem'),
-		crxURL : `http://127.0.0.1:8080/${path.basename(temp.crx)}`
+		crxPath      : temp.crx,
+		zipPath      : temp.zip,
+		xmlPath      : temp.xml,
+		keyPath      : path.join(CWD, 'example', 'example-extension.pem'),
+		crxURL       : `http://127.0.0.1:8080/${path.basename(temp.crx)}`,
+		forceDateTime: 1553470140000 // '2019-03-24T23:29:00.000Z'
 	});
 
 	t.strictEqual(typeof p, 'object', 'Should return object when called with files and options');
