@@ -217,9 +217,11 @@ async function doesItWorkInChrome (t, cfg) {
 
 	const margin = ' '.padStart(t._objectPrintDepth || 0, '.'); // eslint-disable-line no-underscore-dangle
 
-	// Since v112, Chrome/Chromium has "new" headless mode, which supports extensions and does not need XVFB
+	// Since v112, Chrome/Chromium has "new" headless mode, which supports extensions and does not need XVFB.
+	// But there are problems running it by GitHub Actions (inside a rootful container),
+	// so allow to force using "full mode" by setting `CHROME_DISABLE_SANDBOX` in environment.
 	/* eslint-disable array-element-newline, array-bracket-newline, multiline-comment-style */
-	const runFullModeMode = !testVersion(chromeVersion.trim(), '112.0.5614.0');
+	const runFullModeMode = process.env.CHROME_DISABLE_SANDBOX || !testVersion(chromeVersion.trim(), '112.0.5614.0');
 	const browserIgnoreDefaultArgs = [
 		'--disable-extensions', // Do not disable extensions when we want to test them ;P
 		'--disable-background-networking' // Do not prevent browser from force_installing our stuff
@@ -254,7 +256,7 @@ async function doesItWorkInChrome (t, cfg) {
 	/* eslint-enable array-element-newline, array-bracket-newline, multiline-comment-style */
 
 	const browser = await puppeteer.launch({
-		headless         : false, // This has to be false, even when we're passing `headless=new` arg
+		headless         : false, // This has to be false, even when we're passing `headless=new` option
 		executablePath   : process.env.CHROME_BIN || null,
 		ignoreDefaultArgs: browserIgnoreDefaultArgs,
 		args             : browserArgs

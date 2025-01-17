@@ -187,20 +187,3 @@ After container image is ready, every time you want to run test, just use:
 ```sh
 podman run --rm --init -v $(pwd):/app -w /app --userns=keep-id -it puppeteer:latest xvfb-run npm test
 ```
-
-### Testing with `docker`
-
-First step is to prepare container image. This step is needed only once.
-
-```sh
-# 1. Prepare container, this step is needed only once
-docker build -t puppeteer -f puppeteer.containerfile
-# 2. Install puppeteer-core, this step is needed only once
-docker run --rm --init -v $(pwd):/app -w /app -it puppeteer:latest npm run puppeteer
-```
-
-After container image is ready, every time you want to run test, just use:
-
-```sh
-docker run --rm --init -v $(pwd):/app -w /app -it puppeteer:latest xvfb-run npm test
-```
