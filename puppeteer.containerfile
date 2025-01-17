@@ -2,13 +2,18 @@
 # Example build command:
 # 	podman build -t puppeteer -f puppeteer.containerfile
 #
+# Example run command:
+#   podman run --rm --init -v $(pwd):/app -w /app --userns=keep-id -it puppeteer xvfb-run npm test
+# Or:
+#   podman run --rm --init -v $(pwd):/app -w /app --user node2 --userns=keep-id:uid=1001,gid=1001 -it puppeteer xvfb-run npm test
+#
 FROM docker.io/node:alpine
 
 # If set to values different than the ones used by Node.js (1000:1000 at the time of writing),
 # `node2` group and user will be added and container can be run as that user:
 #   podman run --user node2 -rm -it puppeteer
-ARG UID=
-ARG GID=
+ARG UID=1000
+ARG GID=1000
 
 USER root
 

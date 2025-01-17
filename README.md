@@ -179,11 +179,11 @@ First step is to prepare container image. This step is needed only once.
 # 1. Prepare container, this step is needed only once
 podman build -t puppeteer -f puppeteer.containerfile
 # 2. Install puppeteer-core, this step is needed only once
-podman run --rm --init -v $(pwd):/app -w /app --userns=keep-id -it puppeteer:latest npm run puppeteer
+podman run --rm --init -v $(pwd):/app -w /app --userns=keep-id:uid=1000,gid=1000 -it puppeteer:latest npm run puppeteer
 ```
 
 After container image is ready, every time you want to run test, just use:
 
 ```sh
-podman run --rm --init -v $(pwd):/app -w /app --userns=keep-id -it puppeteer:latest xvfb-run npm test
+podman run --rm --init -v $(pwd):/app -w /app --userns=keep-id:uid=1000,gid=1000 -it puppeteer:latest xvfb-run npm test
 ```
