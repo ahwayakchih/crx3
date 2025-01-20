@@ -1,0 +1,103 @@
+name: puppeteer-container
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ v* ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: puppeteer
+  CONTAINERFILE: puppeteer.containerfile
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.step1.outputs.name }}
+      version: ${{ steps.step1.outputs.version }}
+      image_exists: ${{ steps.step1.outputs.image_exists }}
+    steps:
+      - id: step1
+        run: |
+          IMAGE_ID=${{ env.REGISTRY }}/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # we need to get files, so we can prepare version based on containerfile hash
+          git clone ${{ github.SERVER_URL }}/${{ github.REPOSITORY }}
+          cd $(basename ${{ github.REPOSITORY }})
+          git switch "${{ github.REF_NAME }}"
+          # use hash of the container file to version images
+          VERSION=$(sha256sum ${{ env.CONTAINERFILE }} | cut -d ' ' -f 1)
+          IMAGE_EXISTS=$(docker manifest inspect "$IMAGE_ID:$VERSION" &>/dev/null && echo yes || echo no)
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo IMAGE_EXISTS=$IMAGE_EXISTS
+          echo "name=$IMAGE_ID" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "image_exists=$IMAGE_EXISTS" >> "$GITHUB_OUTPUT"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: ${{ needs.prepare.outputs.image_exists == 'no' }}
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: podman --version
+
+      - name: Build container image
+        run: |
+          podman build -t "$IMAGE_NAME" -f "$CONTAINERFILE"\
+            --label "org.opencontainers.image.source=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
+            --label "org.opencontainers.image.description=Puppeteer container" \
+            --label "org.opencontainers.image.licenses=MIT" \
+            --build-arg=UID=$(id -u) \
+            --build-arg=GID=$(id -g)
+
+      - name: List images
+        run: podman images
+
+      - name: Test run
+        run: podman run --rm --init --userns=keep-id -v $(pwd):/app -w /app $IMAGE_NAME ls -la
+
+      - name: Login in to registry
+        if: success()
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+
+      - name: Push container image
+        if: success()
+        run: |
+          podman push $IMAGE_NAME ${{ needs.prepare.outputs.name }}:${{ needs.prepare.outputs.version }}
+          # Export as "latest" when on main branch
+          [ "${{ github.REF_NAME }}" != "master" ] || podman push $IMAGE_NAME ${{ needs.prepare.outputs.name }}:latest
+          # Export as version number when at tagged commit
+          [[ "${{ github.ref }}" != "refs/tags/"* ]] || podman push $IMAGE_NAME ${{ needs.prepare.outputs.name }}:$(basename "${{ github.ref }}" | sed -e 's/^v//')
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [ prepare, build ]
+    if: always() && !failure() && !cancelled()
+
+    container:
+      image: ${{ needs.prepare.outputs.name }}:${{ needs.prepare.outputs.version }}
+      options: --user node2 -e CHROME_DISABLE_SANDBOX=1 -e DEBUG=true
+
+    steps:
+      - name: Checkout
+        run: git clone ${{ github.SERVER_URL }}/${{ github.REPOSITORY }}
+
+      - run: env
+
+      - name: Install and Run
+        run: |
+          cd $(basename ${{ github.REPOSITORY }})
+          git switch "${{ github.REF_NAME }}"
+          npm install && npm run puppeteer
+          xvfb-run npm test
