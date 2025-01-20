@@ -10,6 +10,7 @@ If you need to create web extension file for older browser versions, where CRXv3
 It requires Node.js version 22 (or above) and runs on Linux, MacOS and Windows.
 
 [![Build status on Linux, MacOS and Windows](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml "Linux, MacOS and Windows build logs")
+[![Build status of puppeteer container](https://github.com/ahwayakchih/crx3/actions/workflows/puppeteer-container.yml/badge.svg?branch=master)](https://github.com/ahwayakchih/crx3/actions/workflows/puppeteer-container.yml "Puppeteer container build and test logs")
 
 # Installation
 
