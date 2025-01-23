@@ -5,6 +5,16 @@ on:
     branches: [ master ]
     tags: [ v* ]
 
+  workflow_dispatch:
+    inputs:
+      fullRebuild:
+        description: 'Force rebuilding container image'
+        required: true
+        type: choice
+        options:
+        - 'no'
+        - 'yes'
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: puppeteer
@@ -29,6 +39,7 @@ jobs:
           # use hash of the container file to version images
           VERSION=$(sha256sum ${{ env.CONTAINERFILE }} | cut -d ' ' -f 1)
           IMAGE_EXISTS=$(docker manifest inspect "$IMAGE_ID:$VERSION" &>/dev/null && echo yes || echo no)
+          [ ${{ inputs.fullRebuild || 'no' }} != 'yes' ] || IMAGE_EXISTS='no'
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           echo IMAGE_EXISTS=$IMAGE_EXISTS
