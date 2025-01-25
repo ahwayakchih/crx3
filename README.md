@@ -130,7 +130,7 @@ https://developer.chrome.com/docs/extensions/how-to/distribute/install-extension
 On MacOS or Linux, extension can be installed through a [preferences file](https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#preferences), as long as:
 
 - it's [`update_url`](https://developer.chrome.com/docs/extensions/how-to/distribute/host-on-linux#update_url) value in `manifest.json` file is correct,
-- it's from server with [correct setup](https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#registry).
+- it's from server with [correct setup](https://developer.chrome.com/docs/extensions/how-to/distribute/host-on-linux#hosting).
 
 On Windows, they can be installed via [Windows registry](https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions#registry).
 
