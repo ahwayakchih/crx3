@@ -90,13 +90,15 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 	};
 
 	const manifestPath = path.join(CWD, 'example', 'example-extension', 'manifest.json');
+	// Use the same date and time for source files as those already in example ZIP and CRX files, that we will compare new ones to.
+	const filesTimestamp = 1553470140000; // '2019-03-24T23:29:00.000Z'
 	const p = writeCRX3File([manifestPath], {
 		crxPath      : temp.crx,
 		zipPath      : temp.zip,
 		xmlPath      : temp.xml,
 		keyPath      : path.join(CWD, 'example', 'example-extension.pem'),
 		crxURL       : `http://127.0.0.1:8080/${path.basename(temp.crx)}`,
-		forceDateTime: 1553470140000 // '2019-03-24T23:29:00.000Z'
+		forceDateTime: filesTimestamp
 	});
 
 	t.strictEqual(typeof p, 'object', 'Should return object when called with files and options');
@@ -217,10 +219,12 @@ async function doesItWorkInChrome (t, cfg) {
 
 	const margin = ' '.padStart(t._objectPrintDepth || 0, '.'); // eslint-disable-line no-underscore-dangle
 
-	// Since v112, Chrome/Chromium has "new" headless mode, which supports extensions and does not need XVFB.
-	// But there are problems running it by GitHub Actions (inside a rootful container),
-	// so allow to force using "full mode" by setting `CHROME_DISABLE_SANDBOX` in environment.
-	/* eslint-disable array-element-newline, array-bracket-newline, multiline-comment-style */
+	/*
+	 *	Since v112, Chrome/Chromium has "new" headless mode, which supports extensions and does not need XVFB.
+	 *	But there are problems running it by GitHub Actions (inside a rootful container),
+	 *	so allow to force using "full mode" by setting `CHROME_DISABLE_SANDBOX` in environment.
+	 */
+	/* eslint-disable array-element-newline, multiline-comment-style */
 	const runFullModeMode = process.env.CHROME_DISABLE_SANDBOX || !testVersion(chromeVersion.trim(), '112.0.5614.0');
 	const browserIgnoreDefaultArgs = [
 		'--disable-extensions', // Do not disable extensions when we want to test them ;P
@@ -253,7 +257,7 @@ async function doesItWorkInChrome (t, cfg) {
 	else {
 		t.comment(`${margin}Running browser using "new" headless mode, XVFB is not needed`);
 	}
-	/* eslint-enable array-element-newline, array-bracket-newline, multiline-comment-style */
+	/* eslint-enable array-element-newline, multiline-comment-style */
 
 	const browser = await puppeteer.launch({
 		headless         : false, // This has to be false, even when we're passing `headless=new` option
