@@ -11,6 +11,7 @@ test('findCommonPath', t => {
 	const abce = path.join('a', 'b', 'c', 'example.txt');
 	t.strictEqual(findCommonPath(), '', 'Should return empty string when called without arguments');
 	t.strictEqual(findCommonPath([]), '', 'Should return empty string when files array is empty');
+	t.strictEqual(findCommonPath([path.sep]), path.sep, 'Should return path separator when files array include "root" dorectory');
 	t.strictEqual(findCommonPath(['example.txt']), '', 'Should return empty string when no file has separator in path');
 	t.strictEqual(findCommonPath([a]), a, 'Should return directory when the files contain just a directory');
 	t.strictEqual(findCommonPath([ae]), a, 'Should return directory when the files contain one path');

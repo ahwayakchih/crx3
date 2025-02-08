@@ -9,7 +9,10 @@ test('getFilePaths', t => {
 	t.ok(Array.isArray(temp) && temp.length === 0, 'Should return empty array when called without arguments');
 
 	temp = getFilePaths('test');
-	t.ok(Array.isArray(temp) && temp.length === 0, 'Should return empty array when called with string instead of array');
+	t.ok(Array.isArray(temp) && temp.length === 0, 'Should return empty array when called with a string instead of array');
+
+	temp = getFilePaths(['non-existent-file-path']);
+	t.ok(Array.isArray(temp) && temp.length === 0, 'Should return empty array when files in list do not exist');
 
 	const parentDirname = path.dirname(__dirname);
 	temp = getFilePaths([parentDirname]);

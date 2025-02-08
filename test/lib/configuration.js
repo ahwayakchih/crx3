@@ -74,5 +74,13 @@ test('configuration', t => {
 	t.strictEqual(c.zipPath, path.join(CWD, `${dirName}.zip`), 'Should find and use manifest.json directory name as ZIP file name');
 	t.strictEqual(c.xmlPath, path.join(CWD, `${dirName}.xml`), 'Should find and use manifest.json directory name as XML file name');
 
+	// c = config().setFromArgv();
+	// t.ok(c.crxPath, 'Should use default CRX file path when no args are used (setFromArgv)');
+	// t.ok(c.crxPath.startsWith(CWD), 'Default CRX file path should be in current work directory');
+
+	// t.ok(!c.keyPath, 'Should not set key file path by default when no args are used (setFromArgv)');
+	// t.ok(!c.zipPath, 'Should not set ZIP file path by default when no args are used (setFromArgv)');
+	// t.ok(!c.xmlPath, 'Should not set XML file path by default when no args are used (setFromArgv)');
+
 	t.end();
 });
