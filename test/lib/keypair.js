@@ -43,23 +43,23 @@ test('keypair', t => {
 	}
 
 	let mask = process.umask(0o000);
-	const failPath = 'forbidden';
+	const failPath = 'forbidden-read-key';
 	const writeOnly = 0o200;
 	fs.writeFileSync(failPath, '', {mode: writeOnly});
 	process.umask(mask);
-	const fail = keypair(failPath);
-	t.strictEqual(fail, null, 'Should return `null` if key file exists but could not be read');
+	const keypairFailedOnRead = keypair(failPath);
+	t.strictEqual(keypairFailedOnRead, null, 'Should return `null` if key file exists but could not be read');
 	fs.unlinkSync(failPath);
 
 	mask = process.umask(0o000);
-	const failDirPath = 'forbidden';
+	const failDirPath = 'forbidden-write-dir';
 	const readOnly = 0o400;
-	fs.mkdir(failDirPath, {mode: readOnly}, (err) => {
+	fs.mkdir(failDirPath, {mode: readOnly}, err => {
 		process.umask(mask);
 		t.strictEqual(err, null, 'Should be able to create directory for testing');
-		const failKeyPath = failDirPath + '/test';
-		const failWriteDir = keypair(failKeyPath);
-		t.strictEqual(fail, null, 'Should return `null` if key file exists but could not be read');
+		const failKeyPath = `${failDirPath}/test`;
+		const keypairFailedOnWriteDir = keypair(failKeyPath);
+		t.strictEqual(keypairFailedOnWriteDir, null, 'Should return `null` if key file could not be written');
 		fs.rmdir(failDirPath, () => {
 			// We ignore possible error when trying to remove test directory
 			t.end();
