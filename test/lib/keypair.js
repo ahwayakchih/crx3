@@ -53,7 +53,7 @@ test('keypair', t => {
 
 	mask = process.umask(0o000);
 	const failDirPath = 'forbidden-write-dir';
-	const readOnly = 0o400;
+	const readOnly = 0o444;
 	fs.mkdir(failDirPath, {mode: readOnly}, err => {
 		process.umask(mask);
 		t.strictEqual(err, null, 'Should be able to create directory for testing');
