@@ -51,18 +51,9 @@ test('keypair', t => {
 	t.strictEqual(keypairFailedOnRead, null, 'Should return `null` if key file exists but could not be read');
 	fs.unlinkSync(failPath);
 
-	mask = process.umask(0o000);
-	const failDirPath = 'forbidden-write-dir';
-	const readOnly = 0o444;
-	fs.mkdir(failDirPath, {mode: readOnly}, err => {
-		process.umask(mask);
-		t.strictEqual(err, null, 'Should be able to create directory for testing');
-		const failKeyPath = `${failDirPath}/test`;
-		const keypairFailedOnWriteDir = keypair(failKeyPath);
-		t.strictEqual(keypairFailedOnWriteDir, null, 'Should return `null` if key file could not be written');
-		fs.rmdir(failDirPath, () => {
-			// We ignore possible error when trying to remove test directory
-			t.end();
-		});
-	});
+	const failDirPath = 'non-existant-write-dir';
+	const failKeyPath = `${failDirPath}/test`;
+	const keypairFailedOnWriteDir = keypair(failKeyPath);
+	t.strictEqual(keypairFailedOnWriteDir, null, 'Should return `null` if key file could not be written');
+	t.end();
 });
