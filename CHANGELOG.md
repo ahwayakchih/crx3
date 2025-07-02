@@ -7,7 +7,7 @@ Changelog
 - Bumped minimum Node.js version to 22, not required but older versions are unsupported anyway
 - Improved error output when private key cannot be loaded
 - Updated example ZIP and CRX binaries because tests failed on differences in compression ratio (of exactly the same sources!)
-- Dropped use of runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS)
+- Dropped use of runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS) in favor of GitHub Actions
 - Added puppeteer.containerfile and modified info about testing
 - `keypair()` now returns `null` when key path was specified, but file could not be created, e.g., in read-only directory
 
