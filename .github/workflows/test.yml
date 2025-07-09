@@ -57,7 +57,7 @@ jobs:
   bun:
     strategy:
       matrix:
-        bun-version: [1.2.x]
+        bun-version: [1.2.18]
 
     runs-on: ubuntu-latest
 
