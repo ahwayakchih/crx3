@@ -1,6 +1,7 @@
 const fs = require('fs');
 const test = require('tape-catch');
 const keypair = require('../../lib/keypair');
+const { KeyObject } = require('crypto');
 
 test('keypair', t => {
 	t.strictEqual(typeof keypair, 'function', 'Should export a function');
@@ -10,11 +11,13 @@ test('keypair', t => {
 
 	t.ok(pair.privateKey, 'Pair should contain `privateKey`');
 	t.strictEqual(typeof pair.privateKey, 'object', '`privateKey` should be an object');
-	t.strictEqual(pair.privateKey.constructor.name, 'PrivateKeyObject', 'Private key should be an instance of PrivateKeyObject');
+	t.strictEqual(pair.privateKey instanceof KeyObject, true, '`privateKey` should be an instance of KeyObject');
+	t.strictEqual(pair.privateKey.type, 'private', '`privateKey.type` should be a string value of `private`');
 
 	t.ok(pair.publicKey, 'Pair should contain `publicKey`');
 	t.strictEqual(typeof pair.publicKey, 'object', '`publicKey` should be an object');
-	t.strictEqual(pair.publicKey.constructor.name, 'PublicKeyObject', 'Public key should be an instance of PublicKeyObject');
+	t.strictEqual(pair.publicKey instanceof KeyObject, true, '`publicKey` should be an instance of KeyObject');
+	t.strictEqual(pair.publicKey.type, 'public', '`publicKey.type` should be a string value of `public`');
 
 	const keyPath = './test.pem';
 	if (fs.existsSync(keyPath)) {
