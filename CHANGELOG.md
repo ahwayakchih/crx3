@@ -10,6 +10,7 @@ Changelog
 - Dropped use of runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS) in favor of GitHub Actions
 - Added puppeteer.containerfile and modified info about testing
 - `keypair()` now returns `null` when key path was specified, but file could not be created, e.g., in read-only directory
+- Tests now pass also when run with Bun (tested with Bun v1.2.18)
 
 **v1.1.3** - 2020-11-06
 

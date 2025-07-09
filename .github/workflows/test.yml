@@ -48,7 +48,51 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: failed-test-on-${{ matrix.os }}-with-${{ matrix.node-version }}
+          name: failed-test-on-${{ matrix.os }}-with-node-${{ matrix.node-version }}
+          path: |
+            test*.zip
+            test*.crx
+            test*.xml
+
+  bun:
+    strategy:
+      matrix:
+        bun-version: [1.2.x]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Workaround Windows mess and set git to keep original line endings
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-${{ matrix.bun-version }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.bun-version }}-bun-
+
+      - name: Use latest Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ matrix.bun-version }}
+
+      - run: bun --version
+      - run: bun install
+      - run: bun run build --if-present
+
+      - name: Run tests
+        run: bun run test
+        env:
+          FILE_CHECK_DELAY: 1500
+
+      - name: Upload artifacts in case of failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: failed-test-on-${{ matrix.os }}-with-bun-${{ matrix.bun-version }}
           path: |
             test*.zip
             test*.crx
