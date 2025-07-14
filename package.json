@@ -9,7 +9,8 @@
     "url": "git://github.com/ahwayakchih/crx3.git"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=12",
+    "bun": ">=1.2.18"
   },
   "bin": {
     "crx3": "bin/crx3.js"
