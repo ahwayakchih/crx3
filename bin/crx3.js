@@ -17,8 +17,13 @@ if (process.stdin.isTTY && !hasSrcPaths) {
 	/* eslint-disable prefer-named-capture-group */
 	console.log(config
 		.helpText()
+		// Drop "-" from list of args
+		.replace(/\n-\s/g, (_, point) => `\n  `)
+		// Stylize shell commands
 		.replace(/```sh\n+([\w\W]+?)\n+```/g, (_, sh) => `\u001b[1m${sh}\u001b[0m`)
+		// Embolden Markdown stuff
 		.replace(/\*\*([^*]+?)\*\*/g, (_, bold) => `\u001b[7;1m${bold}\u001b[0m`)
+		// Italicize Markdown stuff
 		.replace(/\*([^*]+?)\*/g, (_, italic) => `\u001b[1m${italic}\u001b[0m`));
 	/* eslint-enable prefer-named-capture-group */
 	process.exit();
