@@ -39,7 +39,8 @@ jobs:
           cache-dependency-path: 'package.json'
       - name: Build docs
         run: npm install && npm test && npm run doc
-        env: FILE_CHECK_DELAY: 1500
+        env:
+          FILE_CHECK_DELAY: 1500
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
