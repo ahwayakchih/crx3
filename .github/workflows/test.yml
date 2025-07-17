@@ -59,11 +59,15 @@ jobs:
       matrix:
         bun-version: [1.2.18]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        experimental: [false]
-        include:
-          # Mark MacOS as experimental, because Bun there seems to use different zlib with different results :(
-          - os: macos-latest
+        experimental: [false, true]
+        exclude:
+          # Only MacOS is experimental, because Bun there seems to use different zlib with different results :(
+          - os: ubuntu-latest
             experimental: true
+          - os: windows-latest
+            experimental: true
+          - os: macos-latest
+            experimental: false
 
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
