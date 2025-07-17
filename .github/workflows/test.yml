@@ -58,9 +58,15 @@ jobs:
     strategy:
       matrix:
         bun-version: [1.2.18]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        experimental: [false]
+        include:
+          # Mark MacOS as experimental, because Bun there seems to use different zlib with different results :(
+          - os: macos-latest
+            experimental: true
 
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
 
     steps:
       - name: Workaround Windows mess and set git to keep original line endings
