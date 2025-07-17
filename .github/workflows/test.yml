@@ -58,8 +58,9 @@ jobs:
     strategy:
       matrix:
         bun-version: [1.2.18]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Workaround Windows mess and set git to keep original line endings
