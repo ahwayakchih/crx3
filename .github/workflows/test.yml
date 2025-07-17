@@ -12,7 +12,7 @@ on:
 
 jobs:
 
-  simple:
+  nodejs:
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
