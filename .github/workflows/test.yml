@@ -70,7 +70,7 @@ jobs:
             isSuccessRequired: required
 
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.isSuccessRequired == "optional" }}
+    continue-on-error: ${{ matrix.isSuccessRequired == 'optional' }}
 
     steps:
       - name: Workaround Windows mess and set git to keep original line endings
