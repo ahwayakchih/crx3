@@ -59,18 +59,18 @@ jobs:
       matrix:
         bun-version: [1.2.18]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        experimental: [false, true]
+        isSuccessRequired: [required, optional]
         exclude:
-          # Only MacOS is experimental, because Bun there seems to use different zlib with different results :(
+          # Only MacOS can fail, because Bun there seems to use different zlib with different results, and ZIP file comparison fails :(
           - os: ubuntu-latest
-            experimental: true
+            isSuccessRequired: optional
           - os: windows-latest
-            experimental: true
+            isSuccessRequired: optional
           - os: macos-latest
-            experimental: false
+            isSuccessRequired: required
 
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.isSuccessRequired == "optional" }}
 
     steps:
       - name: Workaround Windows mess and set git to keep original line endings
