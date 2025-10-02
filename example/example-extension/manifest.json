@@ -2,8 +2,8 @@
 	"name": "Example That Does Nothing",
 	"version": "1.0",
 	"description": "Create a better one!",
-	"manifest_version": 2,
-	"minimum_chrome_version": "60",
+	"manifest_version": 3,
+	"minimum_chrome_version": "126",
 	"content_scripts": [
 		{
 			"matches": ["http://127.0.0.1:8080/*"],
