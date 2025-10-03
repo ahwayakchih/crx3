@@ -6,6 +6,7 @@ Changelog
 - Updated dependencies
 - Bumped minimum Node.js version to 22, not required but older versions are unsupported anyway
 - Improved error output when private key cannot be loaded
+- Example extension uses manifest v3 now, since Chromium/Chrome stopped accepting v2
 - Updated example ZIP and CRX binaries because tests failed on differences in compression ratio (of exactly the same sources!)
 - Dropped use of runners on AppVeyor (Windows) and Cirrus CI (Linux & MacOS) in favor of GitHub Actions
 - Added puppeteer.containerfile and modified info about testing
