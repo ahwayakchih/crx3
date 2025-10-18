@@ -15,12 +15,24 @@ env:
   NODE_LATEST: 25.x
 
 jobs:
+  nodeversions:
+    runs-on: ubuntu-latest
+    outputs:
+      NODE_LTE: ${{ env.NODE_LTE }}
+      NODE_LATEST: ${{ env.NODE_LATEST }}
+    steps:
+      - name: "Prepare node.js version matrix"
+        run: |
+          echo "NODE_LTE=${{ env.NODE_LTE }}" >> $GITHUB_OUTPUT
+          echo "NODE_LATEST=${{ env.NODE_LATEST }}" >> $GITHUB_OUTPUT
 
   nodejs:
+    needs: nodeversions
+
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        node-version: [${{ env.NODE_LTE }}, ${{ env.NODE_LATEST }}]
+        node-version: ["${{ needs.nodeversions.outputs.NODE_LTE }}", "${{ needs.nodeversions.outputs.NODE_LATEST }}"]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
