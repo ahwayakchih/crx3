@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        node-version: [$NODE_LTE, $NODE_LATEST]
+        node-version: [${{ env.NODE_LTE }}, ${{ env.NODE_LATEST }}]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
@@ -126,7 +126,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: $NODE_LATEST
+          node-version: ${{ env.NODE_LATEST }}
           cache: 'npm'
           cache-dependency-path: 'package.json'
 
