@@ -11,10 +11,12 @@ on:
     branches: [ "master" ]
 
 env:
+  # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
   NODE_LTE: 22.x
   NODE_LATEST: 25.x
 
 jobs:
+  # Copy node version numbers found in env into output variables, that can be used in strategy matrixes.
   nodeversions:
     runs-on: ubuntu-latest
     outputs:
@@ -27,11 +29,11 @@ jobs:
           echo "NODE_LATEST=${{ env.NODE_LATEST }}" >> $GITHUB_OUTPUT
 
   nodejs:
+    # Env variables are not available for strategy matrix, so we need to depend on output variables.
     needs: nodeversions
 
     strategy:
       matrix:
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         node-version: ["${{ needs.nodeversions.outputs.NODE_LTE }}", "${{ needs.nodeversions.outputs.NODE_LATEST }}"]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
