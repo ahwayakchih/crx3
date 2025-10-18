@@ -21,6 +21,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  NODE_LATEST: 25.x
+
 jobs:
   # Single deploy job since we're just deploying
   deploy:
@@ -34,7 +37,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24.x
+          node-version: $NODE_LATEST
           cache: 'npm'
           cache-dependency-path: 'package.json'
       - name: Build docs
