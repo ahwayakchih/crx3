@@ -1,7 +1,7 @@
 const fs = require('fs');
 const test = require('tape-catch');
 const keypair = require('../../lib/keypair');
-const { KeyObject } = require('crypto');
+const {KeyObject} = require('crypto');
 
 test('keypair', t => {
 	t.strictEqual(typeof keypair, 'function', 'Should export a function');
@@ -45,7 +45,7 @@ test('keypair', t => {
 		fs.unlinkSync(keyPath);
 	}
 
-	let mask = process.umask(0o000);
+	const mask = process.umask(0o000);
 	const failPath = 'forbidden-read-key';
 	const writeOnly = 0o200;
 	fs.writeFileSync(failPath, '', {mode: writeOnly});

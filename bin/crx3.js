@@ -18,7 +18,7 @@ if (process.stdin.isTTY && !hasSrcPaths) {
 	console.log(config
 		.helpText()
 		// Drop "-" from list of args
-		.replace(/\n-\s/g, (_, point) => `\n  `)
+		.replace(/\n-\s/g, () => '\n  ')
 		// Stylize shell commands
 		.replace(/```sh\n+([\w\W]+?)\n+```/g, (_, sh) => `\u001b[1m${sh}\u001b[0m`)
 		// Embolden Markdown stuff
