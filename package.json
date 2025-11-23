@@ -24,15 +24,14 @@
     "c8": "^10.1.3",
     "docdash": "^2.0.2",
     "eslint": "^9.39.1",
-    "eslint-plugin-jsdoc": "^51.4.1",
+    "eslint-plugin-jsdoc": "^61.4.1",
     "jsdoc": "^4.0.5",
-    "tap-diff": "^0.1.1",
     "tape": "^5.9.0",
     "tape-catch": "^1.0.6"
   },
   "scripts": {
     "puppeteer": "node ./puppeteer-core.js",
-    "test": "node ./test/index.js | tap-diff",
+    "test": "node ./test/index.js",
     "prepublishOnly": "npm run -s test && npm run -s checkStyle",
     "proto": "curl https://raw.githubusercontent.com/chromium/chromium/master/components/crx_file/crx3.proto > lib/crx3.proto",
     "postproto": "echo '/* eslint-disable */' > lib/crx3.pb.js && pbf lib/crx3.proto --no-read >> lib/crx3.pb.js",
