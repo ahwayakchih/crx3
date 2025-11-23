@@ -1,7 +1,7 @@
 Changelog
 =========
 
-**v2.0.0** - WIP
+**v2.0.0** - 2025-11-23
 
 - Updated dependencies
 - Bumped minimum Node.js version to 22, not required but older versions are unsupported anyway
