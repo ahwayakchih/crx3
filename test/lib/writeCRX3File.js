@@ -16,7 +16,7 @@ const CWD = process.cwd();
 // Port number should be the same as the one found in `example/example-extension` files.
 const PORT = 8080;
 
-const NUMBER_OF_FILES_IN_EXAMPLE_ZIP = 2;
+const EXAMPLE_ZIP_CONTENTS = 'ad185b2c\texample.js\nef3ea3f0\tmanifest.json';
 const DEFAULT_FILE_CHECK_DELAY = 1500;
 const HTTP_OK = 200;
 
@@ -110,6 +110,50 @@ function testWriteCRX3FileWithFilesAndOptions (t) {
 		.catch(err => t.end(err));
 }
 
+function normalizeUnzipOutput (output) {
+	/*
+	 *	Example output:
+	 *
+	 *	Archive:  /app/example/example-extension.zip
+	 *	 Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+	 *	--------  ------  ------- ---- ---------- ----- --------  ----
+	 *	     277  Defl:N      123  55% 03-24-2019 23:29 ad185b2c  example.js
+	 *	     320  Defl:N      209  34% 03-24-2019 23:29 ef3ea3f0  manifest.json
+	 *	--------          ------- ----                            ----
+	 *	     597              332  44%                            2 files
+	 */
+	var fileSection = false;
+	const files = output
+		// Split lines...
+		.split(/[\r\n]+/)
+		// ... map them so anything that is not about a file is empty...
+		.map(line => {
+			const isSeparator = line.startsWith('--');
+
+			if (isSeparator) {
+				fileSection = !fileSection;
+				return '';
+			}
+
+			if (!fileSection) {
+				return '';
+			}
+
+			const cols = line.split(/\s+/);
+			const name = cols.pop();
+			const crc = cols.pop();
+
+			return `${crc}	${name}`;
+		})
+		// ... drop empty lines.
+		.filter(Boolean);
+
+	// Sometimes files are in different order, so sort them before returning result.
+	files.sort();
+
+	return files.join('\n');
+}
+
 function compareWithExample (t, cfg) {
 	const examplePath = path.join(CWD, 'example');
 	const example = {
@@ -132,14 +176,9 @@ function compareWithExample (t, cfg) {
 	t.ok(cfg.zipPath, 'Promised result should have `zipPath` set');
 	t.ok(fs.existsSync(cfg.zipPath), `"${cfg.zipPath}" file should exist`);
 	t.ok(fs.existsSync(example.zip), `"${example.zip}" file should exist`);
-	const zipExample = tryExec(t, `unzip -v ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`)
-		.replace(example.zip, '')
-		.replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
-	const selfTest = zipExample.match(/(ad185b2c\s+example.js|f643ef3e\smanifest.json)/); // eslint-disable-line prefer-named-capture-group
-	t.ok(selfTest && selfTest.length === NUMBER_OF_FILES_IN_EXAMPLE_ZIP, 'Should pass self-test of unzip output');
-	const zipTest = tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`)
-		.replace(cfg.zipPath, '')
-		.replace(/\s\d{2}:\d{2}\s/g, ' hh:mm ');
+	const zipExample = normalizeUnzipOutput(tryExec(t, `unzip -v ${example.zip}`, `"${example.zip}" file should be a valid ZIP file`));
+	t.strictEqual(zipExample, EXAMPLE_ZIP_CONTENTS, 'Should pass self-test of unzip output');
+	const zipTest = normalizeUnzipOutput(tryExec(t, `unzip -v ${cfg.zipPath}`, `"${cfg.zipPath}" file should be a valid ZIP file`));
 	const zipMatches = zipTest === zipExample;
 	t.strictEqual(zipTest, zipExample, `Created "${cfg.zipPath}" should match "${example.zip}"`);
 
