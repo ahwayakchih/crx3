@@ -26,12 +26,14 @@ jobs:
     outputs:
       NODE_MIN: ${{ env.NODE_MIN }}
       NODE_LATEST: ${{ env.NODE_LATEST }}
+      BUN_MIN: ${{ env.BUN_MIN }}
+      BUN_LATEST: ${{ env.BUN_LATEST }}
     steps:
-      - name: "Prepare node.js version matrix"
+      - name: "Prepare node.js versions for matrix"
         run: |
           echo "NODE_MIN=${{ env.NODE_MIN }}" >> $GITHUB_OUTPUT
           echo "NODE_LATEST=${{ env.NODE_LATEST }}" >> $GITHUB_OUTPUT
-      - name: "Prepare bun.sh version matrix"
+      - name: "Prepare bun.sh versions for matrix"
         run: |
           echo "BUN_MIN=${{ env.BUN_MIN }}" >> $GITHUB_OUTPUT
           echo "BUN_LATEST=${{ env.BUN_LATEST }}" >> $GITHUB_OUTPUT
@@ -104,7 +106,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.bun-version }}-bun-
 
-      - name: Use latest Bun
+      - name: Use bun ${{ matrix.bun-version }}
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ matrix.bun-version }}
