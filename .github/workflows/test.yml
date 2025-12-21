@@ -75,7 +75,7 @@ jobs:
   bun:
     strategy:
       matrix:
-        bun-version: [1.2.18, 1.3.0]
+        bun-version: [1.2.18, 1.3.5]
         os: [ubuntu-latest, windows-latest, macos-latest]
         isSuccessRequired: [required, optional]
         exclude:
