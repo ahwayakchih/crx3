@@ -12,29 +12,37 @@ on:
 
 env:
   # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-  NODE_LTE: 22.x
+  # MIN means minimum required (see `package.json`)
+  NODE_MIN: 22.x
   NODE_LATEST: 25.x
+  # Where's bun's release schedule?
+  BUN_MIN: 1.2.18
+  BUN_LATEST: 1.3.5
 
 jobs:
   # Copy node version numbers found in env into output variables, that can be used in strategy matrixes.
-  nodeversions:
+  runtimeversions:
     runs-on: ubuntu-latest
     outputs:
-      NODE_LTE: ${{ env.NODE_LTE }}
+      NODE_MIN: ${{ env.NODE_MIN }}
       NODE_LATEST: ${{ env.NODE_LATEST }}
     steps:
       - name: "Prepare node.js version matrix"
         run: |
-          echo "NODE_LTE=${{ env.NODE_LTE }}" >> $GITHUB_OUTPUT
+          echo "NODE_MIN=${{ env.NODE_MIN }}" >> $GITHUB_OUTPUT
           echo "NODE_LATEST=${{ env.NODE_LATEST }}" >> $GITHUB_OUTPUT
+      - name: "Prepare bun.sh version matrix"
+        run: |
+          echo "BUN_MIN=${{ env.BUN_MIN }}" >> $GITHUB_OUTPUT
+          echo "BUN_LATEST=${{ env.BUN_LATEST }}" >> $GITHUB_OUTPUT
 
   nodejs:
     # Env variables are not available for strategy matrix, so we need to depend on output variables.
-    needs: nodeversions
+    needs: runtimeversions
 
     strategy:
       matrix:
-        node-version: ["${{ needs.nodeversions.outputs.NODE_LTE }}", "${{ needs.nodeversions.outputs.NODE_LATEST }}"]
+        node-version: ["${{ needs.runtimeversions.outputs.NODE_MIN }}", "${{ needs.runtimeversions.outputs.NODE_LATEST }}"]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
@@ -73,22 +81,15 @@ jobs:
             test*.xml
 
   bun:
+    # Env variables are not available for strategy matrix, so we need to depend on output variables.
+    needs: runtimeversions
+
     strategy:
       matrix:
-        bun-version: [1.2.18, 1.3.5]
+        bun-version: ["${{ needs.runtimeversions.outputs.BUN_MIN }}", "${{ needs.runtimeversions.outputs.BUN_LATEST }}"]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        isSuccessRequired: [required, optional]
-        exclude:
-          # Only MacOS can fail, because Bun there seems to use different zlib with different results, and ZIP file comparison fails :(
-          - os: ubuntu-latest
-            isSuccessRequired: optional
-          - os: windows-latest
-            isSuccessRequired: optional
-          - os: macos-latest
-            isSuccessRequired: required
 
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.isSuccessRequired == 'optional' }}
 
     steps:
       - name: Workaround Windows mess and set git to keep original line endings
