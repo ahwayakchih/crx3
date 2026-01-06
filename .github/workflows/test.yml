@@ -53,10 +53,10 @@ jobs:
       - name: Workaround Windows mess and set git to keep original line endings
         run: git config --global core.autocrlf false
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -73,7 +73,7 @@ jobs:
           FILE_CHECK_DELAY: 1500
 
       - name: Upload artifacts in case of failure
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: failed-test-on-${{ matrix.os }}-with-node-${{ matrix.node-version }}
@@ -97,9 +97,9 @@ jobs:
       - name: Workaround Windows mess and set git to keep original line endings
         run: git config --global core.autocrlf false
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-${{ matrix.bun-version }}-bun-${{ hashFiles('**/bun.lockb') }}
@@ -120,7 +120,7 @@ jobs:
           FILE_CHECK_DELAY: 1500
 
       - name: Upload artifacts in case of failure
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: failed-test-on-${{ matrix.os }}-with-bun-${{ matrix.bun-version }}
@@ -139,9 +139,9 @@ jobs:
       # DEBUG: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_LATEST }}
           cache: 'npm'
@@ -168,7 +168,7 @@ jobs:
         run: npm test
 
       - name: Upload artifacts in case of failure
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: failed-test-on-ubuntu-with-puppeteer
