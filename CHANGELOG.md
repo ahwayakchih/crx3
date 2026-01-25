@@ -1,6 +1,9 @@
 Changelog
 =========
 
+**WIP** - 2026-01-25
+- Updated dependencies
+
 **v2.0.0** - 2025-11-23
 
 - Updated dependencies
