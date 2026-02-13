@@ -12,7 +12,7 @@ It requires Node.js version 22 (or above) or Bun version 1.2.18 (or above) and r
 [![Build status on Linux, MacOS and Windows](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/ahwayakchih/crx3/actions/workflows/test.yml "Linux, MacOS and Windows build logs")
 [![Build status of puppeteer container](https://github.com/ahwayakchih/crx3/actions/workflows/puppeteer-container.yml/badge.svg?branch=master)](https://github.com/ahwayakchih/crx3/actions/workflows/puppeteer-container.yml "Puppeteer container build and test logs")
 
-# Installation
+## Installation
 
 To install CRX3, as with most of the other Node.js modules, use following command line:
 
@@ -89,6 +89,8 @@ zip -r -9 -j - web-extension | crx3 -p web-extension.pem
 
 ## Usage (API)
 
+Here is a quick example of how this module can be used:
+
 ```js
 const crx3 = require('crx3');
 
@@ -104,6 +106,8 @@ crx3(['example/example-extension/manifest.json'], {
 ;
 ```
 
+You can read full API documentation online, at [ahwayakchih.github.io/crx3](https://ahwayakchih.github.io/crx3/).
+
 ## Known Issues
 
 ### CRX_REQUIRED_PROOF_MISSING (Chrome and Chromium)
@@ -116,6 +120,8 @@ Since version 75.x, Chrome requires Google's web store signature on extension fi
 So, there's a chance i got it wrong, in which case do not be afraid to create a new [issue](https://github.com/ahwayakchih/crx3/issues) about it.
 
 Unless extension is being installed through the `chrome://extensions/` page, with "developer mode" enabled beforehand (it has to be enabled and then Chrome has to be restarted), there's a big chance that users will see `CRX_REQUIRED_PROOF_MISSING` error when they try to install `.crx` file created with CRX3 module.
+
+Please also note, that the same CRX file should still install fine when deployed through Google's Admin panel (as reported in comments at [issue#2](https://github.com/ahwayakchih/crx3/issues/2#issuecomment-3896526363)).
 
 For more information about changes required for hosting custom CRX extensions, see:
 https://developer.chrome.com/docs/extensions/mv2/hosting-changes?hl=en#deployment
@@ -139,17 +145,23 @@ On all systems, extensions can be installed through a policy setup:
 - see how to do that at https://www.chromium.org/administrators/configuring-policy-for-extensions,
 - see what policies can be configured at https://www.chromium.org/administrators/policy-list-3.
 
-## API Documentation
+## Development
 
-To generate documentation for this module, clone module from repository (package does not include required files) and use:
+### Generating API documentation
+
+To generate documentation for this module, clone module from repository (NPM package does not include required files) and use:
 
 ```sh
 npm run doc
 ```
 
+It should create files in local `./reports/jsdoc/` subdirectory.
+
+### Writing web extensions
+
 To write extensions, use [Extension API](https://developer.chrome.com/extensions) for Chrome/Chromium and [WebExtensions API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) for Mozilla browsers. They are quite similar, so it is possible to create an extension that works on all of them (it just needs to be build into different extension file formats - you can use https://github.com/mozilla/web-ext for Mozilla).
 
-## Testing
+### Testing
 
 To run tests, clone module (see [API Documentation](#API-documentation)) and use:
 
@@ -172,7 +184,7 @@ Tests include optional support for checking if CRX files built by the module wil
 
 There is an official puppeteer docker image, but it's ~2 GB, which is unnecessarily huge. Using `podman` or `docker`, you can build image that's less than half of that size and is more than enough for testing if generated CRX3 works in a Chromium browser.
 
-### Testing with [rootless `podman`](https://github.com/containers/podman/blob/main/README.md#rootless)
+#### Testing with [rootless `podman`](https://github.com/containers/podman/blob/main/README.md#rootless)
 
 First step is to prepare container image. This step is needed only once.
 
