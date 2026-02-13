@@ -15,8 +15,8 @@ if (!testVersion(process.version.substring(1), MINIMUM_REQUIRED_NODEJS_VERSION))
 
 if (process.stdin.isTTY && !hasSrcPaths) {
 	/* eslint-disable prefer-named-capture-group */
-	console.log(config
-		.helpText()
+	const renderForPipe = text => text;
+	const renderForTTY = text => text
 		// Drop "-" from list of args
 		.replace(/\n-\s/g, () => '\n  ')
 		// Stylize shell commands
@@ -24,8 +24,11 @@ if (process.stdin.isTTY && !hasSrcPaths) {
 		// Embolden Markdown stuff
 		.replace(/\*\*([^*]+?)\*\*/g, (_, bold) => `\u001b[7;1m${bold}\u001b[0m`)
 		// Italicize Markdown stuff
-		.replace(/\*([^*]+?)\*/g, (_, italic) => `\u001b[1m${italic}\u001b[0m`));
+		.replace(/\*([^*]+?)\*/g, (_, italic) => `\u001b[1m${italic}\u001b[0m`);
 	/* eslint-enable prefer-named-capture-group */
+	const render = process.stdout.isTTY ? renderForTTY : renderForPipe;
+
+	console.log(render(config.helpText()));
 	process.exit();
 }
 
