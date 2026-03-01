@@ -5,7 +5,7 @@
  * @param {string} name
  */
 module.exports = function include (name) {
-	var result = null;
+	var result;
 	try {
 		result = require(name); // eslint-disable-line global-require
 	}
