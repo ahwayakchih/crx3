@@ -1,11 +1,16 @@
-const jsdoc = require('eslint-plugin-jsdoc');
-const globals = require('globals');
-const js = require('@eslint/js');
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
 
-module.exports = [js.configs.recommended, {
+import js from '@eslint/js';
+import jsdoc from 'eslint-plugin-jsdoc';
+
+export default defineConfig([{
     plugins: {
+        js,
         jsdoc,
     },
+
+    extends: ["js/recommended"],
 
     languageOptions: {
         globals: {
@@ -365,4 +370,4 @@ module.exports = [js.configs.recommended, {
         "jsdoc/require-returns-type": 1,
         "jsdoc/valid-types": 1,
     },
-}];
+}]);
