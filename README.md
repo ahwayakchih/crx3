@@ -26,7 +26,7 @@ or install it globally:
 npm install -g --omit=dev crx3
 ```
 
-If you want to work on CRX3 module, clone the module repository (see [API Documentation](#Generating-API-documentation)) and use the following command line instead of the one above:
+If you want to work on CRX3 module, clone the module repository (see [API Documentation](#generating-api-documentation)) and use the following command line instead of the one above:
 
 ```sh
 npm install
@@ -175,7 +175,7 @@ To write extensions, use [Extension API](https://developer.chrome.com/extensions
 
 ### Testing
 
-To run tests, clone module (see [API Documentation](#Generating-API-documentation)) and use:
+To run tests, clone module (see [API Documentation](#generating-api-documentation)) and use:
 
 ```sh
 npm test
