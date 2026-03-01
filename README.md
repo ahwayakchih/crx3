@@ -14,16 +14,22 @@ It requires Node.js version 22 (or above) or Bun version 1.2.18 (or above) and r
 
 ## Installation
 
-To install CRX3, as with most of the other Node.js modules, use following command line:
+To install CRX3 for regular use, as with most of the other Node.js modules, use following command line:
 
 ```sh
-npm install crx3
+npm install --omit=dev crx3
 ```
 
 or install it globally:
 
 ```sh
-npm install -g crx3
+npm install -g --omit=dev crx3
+```
+
+If you want to work on CRX3 module, clone the module repository (see [API Documentation](#Generating-API-documentation)) and use the following command line instead of the one above:
+
+```sh
+npm install
 ```
 
 ## Usage (CLI)
@@ -149,7 +155,13 @@ On all systems, extensions can be installed through a policy setup:
 
 ### Generating API documentation
 
-To generate documentation for this module, clone module from repository (NPM package does not include required files) and use:
+To generate documentation for this module, clone module from repository (NPM package does not include required files) like so:
+
+```sh
+git clone https://github.com/ahwayakchih/crx3.git
+```
+
+and then, in the cloned directory (`cd crx3` to enter the directory), use the following command:
 
 ```sh
 npm run doc
@@ -163,7 +175,7 @@ To write extensions, use [Extension API](https://developer.chrome.com/extensions
 
 ### Testing
 
-To run tests, clone module (see [API Documentation](#API-documentation)) and use:
+To run tests, clone module (see [API Documentation](#Generating-API-documentation)) and use:
 
 ```sh
 npm test
