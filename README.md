@@ -181,6 +181,12 @@ To run tests, clone module (see [API Documentation](#Generating-API-documentatio
 npm test
 ```
 
+or, when running with bun:
+
+```sh
+bun run test
+```
+
 Tests include optional support for checking if CRX files built by the module will run in Chromium browser on a Linux system. To make it work:
 
 - make sure that Chrome or Chromium browser is already installed,
