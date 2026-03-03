@@ -60,6 +60,7 @@
   "license": "MIT",
   "files": [
     "bin/**",
+    "index.d.ts",
     "lib/**",
     "index.js",
     "README.md"
