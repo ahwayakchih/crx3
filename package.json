@@ -1,6 +1,7 @@
 {
   "name": "crx3",
   "version": "2.0.0",
+  "types": "index.d.ts",
   "description": "Package web extension into CRX file (version 3) for Google Chrome and Chromium browsers",
   "main": "index.js",
   "homepage": "https://github.com/ahwayakchih/crx3",
