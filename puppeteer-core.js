@@ -10,6 +10,7 @@ const chromeToPupeteer = [
 	 * https://pptr.dev/supported-browsers#supported-browser-version-list
 	 */
 	// Chromium version, Last compatible puppeteer version
+	['147.0.7727.57', '24.42.0'],
 	['147.0.7727.56', '24.41.0'],
 	['146.0.7680.153', '24.40.0'],
 	['146.0.7680.76', '24.39.1'],
