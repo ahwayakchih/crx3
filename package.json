@@ -24,9 +24,9 @@
     "@eslint/js": "^10.0.1",
     "c8": "^11.0.0",
     "docdash": "^2.0.2",
-    "eslint": "^10.1.0",
-    "eslint-plugin-jsdoc": "^62.8.0",
-    "globals": "^17.4.0",
+    "eslint": "^10.2.1",
+    "eslint-plugin-jsdoc": "^62.9.0",
+    "globals": "^17.5.0",
     "jsdoc": "^4.0.5",
     "tape": "^5.9.0",
     "tape-catch": "^1.0.6"
