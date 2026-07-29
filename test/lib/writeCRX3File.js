@@ -318,19 +318,40 @@ async function doesItWorkInChrome (t, cfg) {
 
 	const browserVersion = await browser.version();
 	// This helps diagnose problem if there's a timeout later, before final check
-	t.ok(browserVersion, `Browser version: "${browserVersion}"`); // It also seems to add enough delay to avoid timeout on CirrusCI ;D
+	t.ok(browserVersion, `Browser version: "${browserVersion}"`);
 
-	const extensionXMLRequested = testVersion(browserVersion.replace(/^[\w\W]*\//, ''), '93.0.4577.0')
+	const browserVersionNumber = browserVersion.replace(/^[\w\W]*\//, '');
+
+	const extensionXMLRequested = testVersion(browserVersionNumber, '93.0.4577.0')
 		? Promise.resolve()
 		// Older Chromium seems to request for XML file AGAIN and only after that extension seems to work OK
 		: testServer.waitFor(`/${path.basename(cfg.xmlPath)}`, FILE_CHECK_DELAY).catch(() => true);
 
+	const {
+		promise: pageLoaded,
+		resolve: pageLoadedResolve
+	} = Promise.withResolvers();
+	page.once('load', () => pageLoadedResolve());
+
+	/*
+	 *	Not sure which version fixed this, so setting up to first major release of current version.
+	 *	There's some additional delay (for XML parsing?) needed for older browsers.
+	 *	Delay causes error when used with browser > 149.x (or maybe it's pupeteer's problem, not sure):
+	 *
+	 *		Error: Attempted to use detached Frame 'F824FAA8B3B12EC228BFBF4ACD495BE5'
+	 *
+	 *	Also page must be reloaded there or it won't work.
+	 */
+	const browserNeedsDelayAndReload = !testVersion(browserVersionNumber, '150.0.7871.24');
+
 	await page.goto('http://127.0.0.1:8080/')
+		// Wait for browser to get extension...
 		.then(() => extensionXMLRequested)
-		// There's some additional delay (for XML parsing?) needed
-		.then(() => new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)))
-		// Reload page or it won't work
-		.then(() => page.reload())
+		// ... wait for page to be loaded...
+		.then(() => pageLoaded)
+		// ... wait some more for extension and possibly force page reload...
+		.then(() => browserNeedsDelayAndReload && new Promise(resolve => setTimeout(resolve, FILE_CHECK_DELAY)))
+		.then(() => browserNeedsDelayAndReload && page.reload())
 		// Finally! Test if extension was initialized and worked
 		.then(() => page.waitForSelector('body[data-id]', {timeout: FILE_CHECK_DELAY}))
 		.then(() => page.evaluate(() => document.body.getAttribute('data-id'))) // eslint-disable-line no-undef
