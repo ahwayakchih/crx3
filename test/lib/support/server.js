@@ -113,11 +113,21 @@ function initTestServer (root, port, fileMap) {
 		}
 
 		const html = Buffer.from('<html><head><title>Test page</title></head><body>Test content</body></html>', 'utf8');
-		res.writeHead(HTTP_OK, 'OK', {
+		const headers = {
 			'Content-Type'  : 'text/html; charset=utf-8',
 			'Content-Length': html.length
-		});
+		};
+
+		res.writeHead(HTTP_OK, 'OK', headers);
 		res.end(html);
+
+		process.send({
+			action: 'response',
+			url   : req.url,
+			status: res.statusCode,
+			html  : html.toString('utf-8'),
+			headers
+		});
 	});
 
 	server.listen(port, '0.0.0.0', () => {
