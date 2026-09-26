@@ -9,7 +9,7 @@
 # Or:
 #   podman run --rm --init -v $(pwd):/app -w /app --user node2 --userns=keep-id:uid=1001,gid=1001 -it puppeteer xvfb-run npm test
 #
-# Last change at: 2026-09-14, Alpine 3.24.1, Node 26.8.2
+# Last change at: 2026-09-26, Alpine 3.24.2, Node 26.10.0
 FROM docker.io/node:alpine
 
 # If set to values different than the ones used by Node.js (1000:1000 at the time of writing),
