@@ -1,8 +1,11 @@
 Changelog
 =========
 
-**WIP** - 2026-01-25
+**WIP** - 2026-10-31
 - Updated dependencies
+- Added `--followSymbolicLinks` option (issue #22)
+- Improved error message used when none of the paths could be used (issue #22)
+- Added `--verbose` option to output list of files included in extension (when creating ZIP file)
 
 **v2.0.0** - 2025-11-23
 

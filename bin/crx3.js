@@ -44,6 +44,9 @@ writeCRX3File(process.stdin.isTTY || hasSrcPaths ? config.srcPaths : process.std
 		if (options.xmlPath) {
 			console.log(`XML file created at "${options.xmlPath}"`);
 		}
+		if (options.verbose && options.files) {
+			console.log(`Following files were included:\n\n  ${options.files.join('\n  ')}`);
+		}
 	})
 	.catch(err => {
 		console.error(err);

@@ -42,21 +42,23 @@ crx3 web-extension-directory
 
 It supports following options:
 
-- *-z, --zip, --zipPath*: create also a simple ZIP file with web extension's files
-- *-o, --crx, --crxPath*: specify custom path name for CRX3 file
-- *-p, --key, --keyPath*: specify custom path name for private key file
-- *-x, --xml, --xmlPath*: specify custom path name for XML (Update Manifest) file
-- *--forceDateTime*     : specify UNIX timestamp to be used for content of a new ZIP file
-- *--appVersion*        : specify version number to be written into Update Manifest file
-- *--crxURL*            : specify URL to be written into Update Manifest file
-- *--browserVersion*    : specify minimum browser version required to run web extension
+- *-z, --zip, --zipPath* : create also a simple ZIP file with web extension's files
+- *-o, --crx, --crxPath* : specify custom path name for CRX3 file
+- *-p, --key, --keyPath* : specify custom path name for private key file
+- *-x, --xml, --xmlPath* : specify custom path name for XML (Update Manifest) file
+- *--followSymbolicLinks*: allow following symbolic links when gathering paths for a new ZIP file
+- *--forceDateTime*      : specify UNIX timestamp to be used for content of a new ZIP file
+- *--appVersion*         : specify version number to be written into Update Manifest file
+- *--crxURL*             : specify URL to be written into Update Manifest file
+- *--browserVersion*     : specify minimum browser version required to run web extension
+- *--verbose*            : output which files were included in a new ZIP file
 
 If any of the `*Path` options is not followed by a path or a file name, output file name will be based on the web extension's directory name.
 
 Private key file will not be created if one already exist. Existing one will be used.
 CRX, ZIP and XML files are always overwritten.
 
-`--forceDateTime` is optional and used only when creating new ZIP file.
+`--forceDateTime` and `--followSymbolicLinks` are optional and used only when creating a new ZIP file.
 
 `--appVersion`, `--crxURL` and `--browserVersion` are used only for writing XML file.
 
